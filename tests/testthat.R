@@ -1,4 +1,4 @@
 library(testthat)
-library(airborne)
+library(flyover)
 
-test_check("airborne")
+test_check("flyover")
