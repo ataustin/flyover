@@ -4,12 +4,12 @@ Version: 0.0.0.9000
 Authors@R: 
     person(given = "Adam",
            family = "Austin",
-           role = c("aut", "cre"))
-Description: Refactoring a data pull or refreshing data after some time
-has passed can result in expected (or unexpected!) changes in data contents.
-This package provides utilities to build simple visualizations to understand
-how data distributions change.
+           role = c("aut", "cre"),
+           email = "ataustin@gmail.com")
+Description: Refactoring a data pull or refreshing data after some time has passed can result in expected (or unexpected!) changes in data contents. This package provides utilities to build simple visualizations to understand how data distributions change.
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
+Suggests: 
+    testthat
