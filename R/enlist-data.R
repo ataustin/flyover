@@ -15,7 +15,7 @@
 #' @examples
 #' x <- data.frame(a = 1:3, b = letters[1:3])
 #' y <- data.frame(a = 4:6, b = letters[4:6])
-#' enlist_data(x, y)
+#' enlist_data(x, y, names = c("old", "new"))
 #' 
 #' @export
 
