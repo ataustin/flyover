@@ -30,17 +30,23 @@ stack_data <- function(data_list, drop_mismatches = FALSE) {
     data_list[] <- lapply(data_list, `[`, i = common_cols)
   }
   
-  stacked_data <- dplyr::bind_rows(data_list, .id = "flyover_id")
+  stacked_data <- dplyr::bind_rows(data_list, .id = "flyover_id_")
   stacked_data
 }
 
 
 check_names <- function(data_list) {
   nm <- names(data_list)
-  if(any(nm == "")) {
-    non_named_index <- which(nm == "")
+  
+  if(any(nm == "" | is.na(nm))) {
+    non_named_index <- which(nm == "" | is.na(nm))
     stop(paste("In stack_data, the following list elements require a name.\n",
                paste(non_named_index, collapse = ", ")),
+         call. = FALSE)
+  }
+  
+  if(is.null(nm)) {
+    stop("In stack_data, supplied list has no names.",
          call. = FALSE)
   }
 }
