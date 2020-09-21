@@ -15,8 +15,3 @@ test_that("length errors are handled", {
   expect_error(enlist_data(data1, data2, data1, names = c("one", "two")))
   expect_error(enlist_data(data1, data2, names = c("one", "two", "three")))
 })
-
-
-test_that("non-tabular data errors are handled", {
-  expect_error(enlist_data(data1, not_tab, names = c("one", "two")))
-})
