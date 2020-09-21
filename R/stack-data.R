@@ -2,17 +2,18 @@
 #'
 #' @description  This is a convenience function serving as an
 #' intermediate step in preparing the data for visualization.
-#' It is a basic wrapper for \code{dplyr::bind_rows} that works
+#' It is a basic wrapper for \code{\link{dplyr::bind_rows}} that works
 #' with the data preparation flow of \code{flyover}.  The input list
 #' must be named to correctly identify the data sets after stacking.
 #' 
-#' @param data_list A *named* list of tabular data elements.
-#'                  This is generally the ouptut of \code{enlist_data}.
+#' @param data_list A *named* list of tabular data elements that
+#'                  inherit from \code{data.frame}.
+#'                  This is generally the ouptut of \code{\link{enlist_data}}.
+#'                  Each element will be coerced to a \code{data.frame}.
 #' @param drop_mismatches Logical.  Whether to drop columns across data
 #'                        sets if they fail to appear in any one data
 #'                        set in the list.
-#' @return A single data set; the class of the result obeys the rules of
-#'         \code{\link{dplyr::bind_rows}}.  This object will contain a
+#' @return A single \code{data.frame}.  This object will contain a
 #'         new column \code{flyover_id} for identifying individual source
 #'         data sets after stacking.
 #' @examples
@@ -24,6 +25,8 @@
 
 stack_data <- function(data_list, drop_mismatches = FALSE) {
   check_names(data_list)
+  check_elements_inherit_df(data_list)
+  data_list[] <- lapply(data_list, as.data.frame, stringsAsFactors = FALSE)
   
   if(drop_mismatches) {
     common_cols <- get_common_columns(data_list)

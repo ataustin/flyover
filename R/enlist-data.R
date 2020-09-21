@@ -2,16 +2,18 @@
 #'
 #' @description  This is a convenience function serving as an
 #' intermediate step in preparing the data for visualization.
-#' The function builds a named list
-#' of data frames (or similar objects).  The names will be used to
-#' refer to the data in subsequent visualizations, so ensure they
-#' are meaningful.
+#' The function builds a named list of \code{data.frame}s.
+#' The names will be used to refer to the data in subsequent
+#' visualizations, so ensure they are meaningful.
+#' Each element will be coerced to a \code{data.frame}, SORRY.
 #' 
 #' 
-#' @param ... Data frames, tibbles, or data.tables separated by commas
+#' @param ... Comma-separated input of tabular-type data.  Any class
+#'            that inherits from \code{data.frame} is permitted.
+#'            These are coerced to a \code{data.frame}.
 #' @param names Character vector of names corresponding to each data
 #'              data element in \code{...}
-#' @return A named list
+#' @return A named list of \code{data.frame}s
 #' @examples
 #' x <- data.frame(a = 1:3, b = letters[1:3])
 #' y <- data.frame(a = 4:6, b = letters[4:6])
@@ -22,19 +24,11 @@
 enlist_data <- function(..., names) {
   data_list <- list(...)
   
-  check_elements_are_tabular(data_list)
+  check_elements_inherit_df(data_list)
   check_lengths(data_list, names)
   
+  data_list[] <- lapply(data_list, as.data.frame, stringsAsFactors = FALSE)
   setNames(data_list, names)
-}
-
-
-check_elements_are_tabular <- function(data_list) {
-  inherits_df <- vapply(data_list, inherits, logical(1), what = "data.frame")
-  if(any(!inherits_df)) {
-    stop("Objects must be a tabular data structure (data.frame, tibble,
-         or data.table).")
-  }
 }
 
 
