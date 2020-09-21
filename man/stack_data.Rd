@@ -7,23 +7,24 @@
 stack_data(data_list, drop_mismatches = FALSE)
 }
 \arguments{
-\item{data_list}{A \emph{named} list of tabular data elements.
-This is generally the ouptut of \code{enlist_data}.}
+\item{data_list}{A \emph{named} list of tabular data elements that
+inherit from \code{data.frame}.
+This is generally the ouptut of \code{\link{enlist_data}}.
+Each element will be coerced to a \code{data.frame}.}
 
 \item{drop_mismatches}{Logical.  Whether to drop columns across data
 sets if they fail to appear in any one data
 set in the list.}
 }
 \value{
-A single data set; the class of the result obeys the rules of
-\code{\link{dplyr::bind_rows}}.  This object will contain a
+A single \code{data.frame}.  This object will contain a
 new column \code{flyover_id} for identifying individual source
 data sets after stacking.
 }
 \description{
 This is a convenience function serving as an
 intermediate step in preparing the data for visualization.
-It is a basic wrapper for \code{dplyr::bind_rows} that works
+It is a basic wrapper for \code{\link{dplyr::bind_rows}} that works
 with the data preparation flow of \code{flyover}.  The input list
 must be named to correctly identify the data sets after stacking.
 }

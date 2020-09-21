@@ -7,25 +7,27 @@
 enlist_data(..., names)
 }
 \arguments{
-\item{...}{Data frames, tibbles, or data.tables separated by commas}
+\item{...}{Comma-separated input of tabular-type data.  Any class
+that inherits from \code{data.frame} is permitted.
+These are coerced to a \code{data.frame}.}
 
 \item{names}{Character vector of names corresponding to each data
 data element in \code{...}}
 }
 \value{
-A named list
+A named list of \code{data.frame}s
 }
 \description{
 This is a convenience function serving as an
 intermediate step in preparing the data for visualization.
-The function builds a named list
-of data frames (or similar objects).  The names will be used to
-refer to the data in subsequent visualizations, so ensure they
-are meaningful.
+The function builds a named list of \code{data.frame}s.
+The names will be used to refer to the data in subsequent
+visualizations, so ensure they are meaningful.
+Each element will be coerced to a \code{data.frame}, SORRY.
 }
 \examples{
 x <- data.frame(a = 1:3, b = letters[1:3])
 y <- data.frame(a = 4:6, b = letters[4:6])
-enlist_data(x, y)
+enlist_data(x, y, names = c("old", "new"))
 
 }
