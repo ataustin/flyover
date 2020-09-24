@@ -5,15 +5,15 @@
 #' The function builds a named list of \code{data.frame}s.
 #' The names will be used to refer to the data in subsequent
 #' visualizations, so ensure they are meaningful.
-#' Each element will be coerced to a \code{data.frame}, SORRY.
+#' Each element will be coerced to a \code{tibble}
+#' and row names are dropped, SORRY.
 #' 
 #' 
 #' @param ... Comma-separated input of tabular-type data.  Any class
 #'            that inherits from \code{data.frame} is permitted.
-#'            These are coerced to a \code{data.frame}.
 #' @param names Character vector of names corresponding to each data
 #'              data element in \code{...}
-#' @return A named list of \code{data.frame}s
+#' @return A named list of \code{tibble}s
 #' @examples
 #' x <- data.frame(a = 1:3, b = letters[1:3])
 #' y <- data.frame(a = 4:6, b = letters[4:6])
@@ -27,7 +27,7 @@ enlist_data <- function(..., names) {
   check_elements_inherit_df(data_list)
   check_lengths(data_list, names)
   
-  data_list[] <- lapply(data_list, as.data.frame, stringsAsFactors = FALSE)
+  data_list[] <- lapply(data_list, tibble::as_tibble)
   setNames(data_list, names)
 }
 

@@ -15,5 +15,6 @@ Suggests:
     testthat
 Imports: 
     dplyr,
+    tibble,
     ggplot2,
     trelliscopejs
