@@ -12,9 +12,12 @@
 #' @param drop_mismatches Logical.  Whether to drop columns across data
 #'                        sets if they fail to appear in any one data
 #'                        set in the list.
-#' @return A single \code{tibble}.  This object will contain a
-#'         new column \code{flyover_id} for identifying individual source
-#'         data sets after stacking.
+#' @param group_var Character string.  After stacking, the resulting
+#'                  data will have a new column with this name.  It will
+#'                  contain the list names as its values and will be used
+#'                  to group the data in plots.
+#' @return A single \code{tibble} with a new column having the name
+#'         passed to \code{group_var}.
 #' @examples
 #' x <- list(old = data.frame(a = 1:3),
 #'           new = data.frame(a = 4:6, b = 7:9))
@@ -22,7 +25,7 @@
 #' stack_data(x, drop_mismatches = TRUE)
 #' @export
 
-stack_data <- function(data_list, drop_mismatches = FALSE) {
+stack_data <- function(data_list, drop_mismatches = FALSE, group_var = "flyover_id_") {
   check_names(data_list)
   check_elements_inherit_df(data_list)
   data_list[] <- lapply(data_list, tibble::as_tibble)
@@ -32,7 +35,7 @@ stack_data <- function(data_list, drop_mismatches = FALSE) {
     data_list[] <- lapply(data_list, `[`, i = common_cols)
   }
   
-  stacked_data <- dplyr::bind_rows(data_list, .id = "flyover_id_")
+  stacked_data <- dplyr::bind_rows(data_list, .id = group_var)
   as_tibble(stacked_data)
 }
 

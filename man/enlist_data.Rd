@@ -8,22 +8,22 @@ enlist_data(..., names)
 }
 \arguments{
 \item{...}{Comma-separated input of tabular-type data.  Any class
-that inherits from \code{data.frame} is permitted.
-These are coerced to a \code{data.frame}.}
+that inherits from \code{data.frame} is permitted.}
 
 \item{names}{Character vector of names corresponding to each data
 data element in \code{...}}
 }
 \value{
-A named list of \code{data.frame}s
+A named list of \code{tibble}s
 }
 \description{
 This is a convenience function serving as an
 intermediate step in preparing the data for visualization.
-The function builds a named list of \code{data.frame}s.
-The names will be used to refer to the data in subsequent
-visualizations, so ensure they are meaningful.
-Each element will be coerced to a \code{data.frame}, SORRY.
+The function builds a named list of the data elements.
+The names will be used to group the data in subsequent
+visualizations, so please ensure they are meaningful.
+Each element will be coerced to a \code{tibble}
+and row names are dropped, SORRY.
 }
 \examples{
 x <- data.frame(a = 1:3, b = letters[1:3])

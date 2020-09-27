@@ -2,9 +2,9 @@
 #'
 #' @description  This is a convenience function serving as an
 #' intermediate step in preparing the data for visualization.
-#' The function builds a named list of \code{data.frame}s.
-#' The names will be used to refer to the data in subsequent
-#' visualizations, so ensure they are meaningful.
+#' The function builds a named list of the data elements.
+#' The names will be used to group the data in subsequent
+#' visualizations, so please ensure they are meaningful.
 #' Each element will be coerced to a \code{tibble}
 #' and row names are dropped, SORRY.
 #' 

@@ -4,22 +4,25 @@
 \alias{stack_data}
 \title{Stacks a \emph{named} list of tabular data into a single data structure.}
 \usage{
-stack_data(data_list, drop_mismatches = FALSE)
+stack_data(data_list, drop_mismatches = FALSE, group_var = "flyover_id_")
 }
 \arguments{
 \item{data_list}{A \emph{named} list of tabular data elements that
 inherit from \code{data.frame}.
-This is generally the ouptut of \code{\link{enlist_data}}.
-Each element will be coerced to a \code{data.frame}.}
+This is generally the ouptut of \code{\link{enlist_data}}.}
 
 \item{drop_mismatches}{Logical.  Whether to drop columns across data
 sets if they fail to appear in any one data
 set in the list.}
+
+\item{group_var}{Character string.  After stacking, the resulting
+data will have a new column with this name.  It will
+contain the list names as its values and will be used
+to group the data in plots.}
 }
 \value{
-A single \code{data.frame}.  This object will contain a
-new column \code{flyover_id} for identifying individual source
-data sets after stacking.
+A single \code{tibble} with a new column having the name
+passed to \code{group_var}.
 }
 \description{
 This is a convenience function serving as an
