@@ -91,5 +91,11 @@ check_build_plot_args <- function(stack, group_var, keep_type, plot_is_flyover) 
          plot function, please specify the 'keep_type' argument as
          either 'numeric' or 'categorical'.",
          call. = FALSE)
+  } else {
+    if(plot_is_flyover & !is.null(keep_type)) {
+      warning("In build_plots, you specified a flyover plot, so
+              the keep_type argument is ignored.",
+              call. = FALSE)
+    }
   }
 }

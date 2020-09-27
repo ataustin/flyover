@@ -1,4 +1,9 @@
 keep_cols_by_type <- function(tbl, type) {
+  if(!type %in% c("numeric", "categorical")) {
+    stop("In keep_cols_by_type, type must be either 'numeric' or 'categorical'.",
+         call. = FALSE)
+  }
+  
   keep_fun <- switch(type,
                      numeric = is.numeric,
                      categorical = function(x) is.character(x) | is.factor(x) | is.logical(x))
