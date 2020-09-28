@@ -23,6 +23,7 @@
 #'           new = data.frame(a = 4:6, b = 7:9))
 #' stack_data(x)
 #' stack_data(x, drop_mismatches = TRUE)
+#' 
 #' @export
 
 stack_data <- function(data_list, drop_mismatches = FALSE, group_var = "flyover_id_") {
@@ -36,7 +37,7 @@ stack_data <- function(data_list, drop_mismatches = FALSE, group_var = "flyover_
   }
   
   stacked_data <- dplyr::bind_rows(data_list, .id = group_var)
-  as_tibble(stacked_data)
+  stacked_data
 }
 
 
