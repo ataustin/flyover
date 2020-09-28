@@ -36,4 +36,5 @@ x <- list(old = data.frame(a = 1:3),
           new = data.frame(a = 4:6, b = 7:9))
 stack_data(x)
 stack_data(x, drop_mismatches = TRUE)
+
 }
