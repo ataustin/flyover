@@ -61,7 +61,7 @@ build_plots <- function(stack, plot_fun, group_var = "flyover_id_",
   stack_reduced[, group_var] <- stack[, group_var, drop = TRUE]
   
   for(var in plot_vars) {
-    plot_list[var] <- plot_fun(stack_reduced, var, group_var)
+    plot_list[[var]] <- plot_fun(stack_reduced, var, group_var)
   }
   
   output <- tibble::tibble(variable = plot_vars,
@@ -72,7 +72,7 @@ build_plots <- function(stack, plot_fun, group_var = "flyover_id_",
 
 get_flyover_type_lookup <- function() {
   c(flyover_histogram = "numeric",
-    flyover_ridgeline = "numeric")
+    flyover_density   = "numeric")
 }
 
 
