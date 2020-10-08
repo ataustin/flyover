@@ -28,8 +28,27 @@ test_that("tibble output with categorical flyover function", {
 })
 
 
-# TODO:  add tests for:
-#           custom plotting function
+test_that("tibble output with custom ggplot function", {
+  custom_plot <- function(tbl, var, grp) {
+    ggplot(tbl, aes_string(x = var, y = 1:nrow(tbl), color = grp)) +
+      geom_point()
+  }
+  
+  output <- build_plots(stack, custom_plot, "grp", keep_type = "numeric")
+  expect_is(output, "tbl_df")
+  expect_equal(nrow(output), 2)
+  expect_equal(names(output), c("variable", "plot"))
+  expect_is(output$plot, "list")
+  expect_is(output$plot[[1]], "gg")
+  
+  output <- build_plots(stack, custom_plot, "grp", keep_type = "categorical")
+  expect_is(output, "tbl_df")
+  expect_equal(nrow(output), 3)
+  expect_equal(names(output), c("variable", "plot"))
+  expect_is(output$plot, "list")
+  expect_is(output$plot[[1]], "gg")
+  
+})
 
 
 test_that("errors and warnings are issued", {
