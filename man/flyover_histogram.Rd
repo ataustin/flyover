@@ -3,11 +3,20 @@
 \name{flyover_histogram}
 \alias{flyover_histogram}
 \alias{flyover_density}
+\alias{flyover_binline}
+\alias{flyover_bar_dodge}
+\alias{flyover_bar_fill}
 \title{Minimal functions for basic plotting of groupwise comparisons.}
 \usage{
 flyover_histogram(tbl, var, group_var)
 
 flyover_density(tbl, var, group_var)
+
+flyover_binline(tbl, var, group_var)
+
+flyover_bar_dodge(tbl, var, group_var)
+
+flyover_bar_fill(tbl, var, group_var)
 }
 \arguments{
 \item{tbl}{A \code{tibble} containing the variable of interest and the grouping variable.}
@@ -26,4 +35,16 @@ utilities.  Each function has identical arguments, but each will produce
 a different visual comparison of data across groups depeding on the
 data type to be compared and the geom selected.  The output
 can by modified by directly adding \code{ggplot2} layers in the usual way.
+}
+\examples{
+\dontrun{
+x <- tibble::tibble(group = rep(c("old", "new"), each = 100),
+                    rand  = c(rnorm(100), rnorm(100, mean = 1)))
+flyover_histogram(x, "rand", "group")
+
+y <- tibble::tibble(group = rep(c("old", "new"), each = 100),
+                    rand  = sample(letters[1:4], 200, replace = TRUE))
+flyover_bar_fill(y, "rand", "group")
+}
+
 }

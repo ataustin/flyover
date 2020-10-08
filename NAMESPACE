@@ -2,6 +2,9 @@
 
 export(build_plots)
 export(enlist_data)
+export(flyover_bar_dodge)
+export(flyover_bar_fill)
+export(flyover_binline)
 export(flyover_density)
 export(flyover_histogram)
 export(stack_data)
