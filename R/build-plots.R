@@ -72,7 +72,10 @@ build_plots <- function(stack, plot_fun, group_var = "flyover_id_",
 
 get_flyover_type_lookup <- function() {
   c(flyover_histogram = "numeric",
-    flyover_density   = "numeric")
+    flyover_density   = "numeric",
+    flyover_binline   = "numeric",
+    flyover_bar_dodge = "categorical",
+    flyover_bar_fill  = "categorical")
 }
 
 
