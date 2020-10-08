@@ -19,4 +19,5 @@ Imports:
     dplyr,
     tibble,
     ggplot2,
+    ggridges,
     trelliscopejs

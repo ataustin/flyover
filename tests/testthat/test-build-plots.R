@@ -4,22 +4,33 @@ stack <- data.frame(grp  = rep(c("old", "new"), each = 10),
                     num1 = 1:20,
                     num2 = 21:40,
                     cat1 = letters[1:20],
-                    cat2 = as.character(101:120))
+                    cat2 = as.character(101:120),
+                    cat3 = rep(TRUE, 20))
 
 
 test_that("tibble output with numeric flyover function", {
   output <- build_plots(stack, flyover_histogram, group_var = "grp")
   expect_is(output, "tbl_df")
+  expect_equal(nrow(output), 2)
   expect_equal(names(output), c("variable", "plot"))
   expect_is(output$plot, "list")
   expect_is(output$plot[[1]], "gg")
 })
 
+
+test_that("tibble output with categorical flyover function", {
+  output <- build_plots(stack, flyover_bar_dodge, group_var = "grp")
+  expect_is(output, "tbl_df")
+  expect_equal(nrow(output), 3)
+  expect_equal(names(output), c("variable", "plot"))
+  expect_is(output$plot, "list")
+  expect_is(output$plot[[1]], "gg")
+})
+
+
 # TODO:  add tests for:
-#           categorical flyover function
 #           custom plotting function
-#           
-#   
+
 
 test_that("errors and warnings are issued", {
   expect_error(build_plots(letters, flyover_histogram, group_var = "grp"),
