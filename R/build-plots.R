@@ -31,6 +31,13 @@
 #'                  \code{"numeric"} or \code{"categorical"}.  Passing
 #'                  \code{"categorical"} will keep character, factor,
 #'                  and logical column types.
+#' @param plot_mods list containing additional layers to the \code{ggplot2} call
+#'                  such as theme changes, different color scales, etc.
+#'                  Each layer should be a separate list element.
+#'                  See \code{\link{ggplot2::`+.gg`}} for more details.
+#' @param ... Additional arguments to pass to the \code{geom} of the
+#'            supplied \code{flyover} plot function.  Use this for further
+#'            modifications to the plots if needed.
 #' @return A \code{tibble} containing, for each relevant variable of the
 #'         input data, a row with a plot object and data frame of
 #'         cognostics for the trelliscope display. The tibble can
@@ -41,7 +48,7 @@
 
 
 build_plots <- function(stack, plot_fun, group_var = "flyover_id_",
-                        keep_type = NULL) {
+                        keep_type = NULL, plot_mods = NULL, ...) {
   plot_fun_parse_tree <- as.character(substitute(plot_fun))
   plot_fun_call_char  <- plot_fun_parse_tree[length(plot_fun_parse_tree)]
   
@@ -61,7 +68,7 @@ build_plots <- function(stack, plot_fun, group_var = "flyover_id_",
   stack_reduced[, group_var] <- stack[, group_var, drop = TRUE]
   
   for(var in plot_vars) {
-    plot_list[[var]] <- plot_fun(stack_reduced, var, group_var)
+    plot_list[[var]] <- plot_fun(stack_reduced, var, group_var, ...) + plot_mods
   }
   
   output <- tibble::tibble(variable = plot_vars,
@@ -71,11 +78,12 @@ build_plots <- function(stack, plot_fun, group_var = "flyover_id_",
 
 
 get_flyover_type_lookup <- function() {
-  c(flyover_histogram = "numeric",
-    flyover_density   = "numeric",
-    flyover_binline   = "numeric",
-    flyover_bar_dodge = "categorical",
-    flyover_bar_fill  = "categorical")
+  c(flyover_histogram      = "numeric",
+    flyover_density        = "numeric",
+    flyover_binline_ridges = "numeric",
+    flyover_density_ridges = "numeric",
+    flyover_bar_dodge      = "categorical",
+    flyover_bar_fill       = "categorical")
 }
 
 

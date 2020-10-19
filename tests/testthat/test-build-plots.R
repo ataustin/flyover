@@ -51,6 +51,28 @@ test_that("tibble output with custom ggplot function", {
 })
 
 
+test_that("plot changes do not produce errors", {
+  # test plot_mots
+  expect_silent(build_plots(stack, flyover_histogram, "grp",
+                            plot_mods = xlab("A")))
+  expect_silent(build_plots(stack, flyover_histogram, "grp",
+                            plot_mods = list(xlab("A"))))
+  expect_silent(build_plots(stack, flyover_histogram, "grp",
+                            plot_mods = list(xlab("A"), theme_classic())))
+  
+  
+  # test dots
+  expect_silent(build_plots(stack, flyover_bar_dodge, "grp",
+                            alpha = 0.5))
+  expect_warning(build_plots(stack, flyover_histogram, "grp",
+                             nonsense = 100),
+                 regexp = "unknown parameters: nonsense")
+  expect_warning(build_plots(stack, flyover_histogram, "grp",
+                             alpha = 1),
+                 regexp = "Duplicated aesthetics")
+})
+
+
 test_that("errors and warnings are issued", {
   expect_error(build_plots(letters, flyover_histogram, group_var = "grp"),
                regexp = "must inherit from class data.frame")

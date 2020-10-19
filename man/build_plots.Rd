@@ -4,7 +4,14 @@
 \alias{build_plots}
 \title{Create plot objects for the trelliscope display.}
 \usage{
-build_plots(stack, plot_fun, group_var = "flyover_id_", keep_type = NULL)
+build_plots(
+  stack,
+  plot_fun,
+  group_var = "flyover_id_",
+  keep_type = NULL,
+  plot_mods = NULL,
+  ...
+)
 }
 \arguments{
 \item{stack}{Tabular data that inherits from \code{data.frame}.
@@ -33,6 +40,15 @@ specifies a custom plotting function, the
 \code{"numeric"} or \code{"categorical"}.  Passing
 \code{"categorical"} will keep character, factor,
 and logical column types.}
+
+\item{plot_mods}{list containing additional layers to the \code{ggplot2} call
+such as theme changes, different color scales, etc.
+Each layer should be a separate list element.
+See \code{\link{ggplot2::`+.gg`}} for more details.}
+
+\item{...}{Additional arguments to pass to the \code{geom} of the
+supplied \code{flyover} plot function.  Use this for further
+modifications to the plots if needed.}
 }
 \value{
 A \code{tibble} containing, for each relevant variable of the
