@@ -1,9 +1,9 @@
 # flyover
-High-level visual comparisons of distributions in data sets
+Painlessly generate high-level visual comparisons of distributions between groups or data sets.
 
 
 ## Purpose
-Data processes are fragile.  Whether you refactor your data wrangling code or you require stable distributions of variables through time, understanding how your data changes from one pull to another is important.  This package provides utilities to easily visualize differences between data sets.
+Data processes are fragile.  Whether you refactor your data wrangling pipes, wish to monitor data drift through time, or just want to see how groups vary across many attributes, generating and organizing this information is time-consuming.  When you have many variables to monitor and want something more than statistical thresholds to compare them, this package allows you to easily visualize differences between groups or data sets.
 
 
 ## How it works
@@ -15,4 +15,4 @@ Vignette coming soon.
 ## Install
 `devtools::install_github("ataustin/flyover")`
 
-Note that the dependencies are large and may take a long time to install.
+Note that the dependencies are large (especially trelliscopejs) and may take a long time to install.
