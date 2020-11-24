@@ -128,13 +128,13 @@
 <span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">data_list</span><span class="op">)</span></pre></div>
 <pre><code>## List of 2
 ##  $ old data: tibble [5 × 4] (S3: tbl_df/tbl/data.frame)
-##   ..$ num1: num [1:5] 1.232 -0.745 1.389 -0.417 -1.221
-##   ..$ num2: num [1:5] 0.5147 0.623 0.649 0.0254 0.4526
+##   ..$ num1: num [1:5] 0.586 0.709 -0.109 -0.453 0.606
+##   ..$ num2: num [1:5] 2.878 1.605 0.471 6.402 1.258
 ##   ..$ cat1: chr [1:5] "a" "b" "c" "d" ...
 ##   ..$ cat2: chr [1:5] "z" "z" "z" "z" ...
 ##  $ new data: tibble [5 × 3] (S3: tbl_df/tbl/data.frame)
-##   ..$ num1: num [1:5] 1.721 0.358 0.361 -0.203 2.376
-##   ..$ num2: num [1:5] 4.965 2.5496 3.7972 0.0246 1.9576
+##   ..$ num1: num [1:5] -0.0942 -0.2469 1.6612 -0.4489 0.546
+##   ..$ num2: num [1:5] 1.2525 0.3971 0.0881 1.7222 5.3849
 ##   ..$ cat1: chr [1:5] "a" "b" "c" "d" ...</code></pre>
 </div>
 <div id="creating-a-single-table" class="section level2">
@@ -146,36 +146,36 @@
 
 <span class="va">data_stack</span></pre></div>
 <pre><code>## # A tibble: 10 x 5
-##    flyover_id_   num1   num2 cat1  cat2 
-##    &lt;chr&gt;        &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;
-##  1 old data     1.23  0.515  a     z    
-##  2 old data    -0.745 0.623  b     z    
-##  3 old data     1.39  0.649  c     z    
-##  4 old data    -0.417 0.0254 d     z    
-##  5 old data    -1.22  0.453  e     z    
-##  6 new data     1.72  4.96   a     &lt;NA&gt; 
-##  7 new data     0.358 2.55   b     &lt;NA&gt; 
-##  8 new data     0.361 3.80   c     &lt;NA&gt; 
-##  9 new data    -0.203 0.0246 d     &lt;NA&gt; 
-## 10 new data     2.38  1.96   e     &lt;NA&gt;</code></pre>
+##    flyover_id_    num1   num2 cat1  cat2 
+##    &lt;chr&gt;         &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;
+##  1 old data     0.586  2.88   a     z    
+##  2 old data     0.709  1.61   b     z    
+##  3 old data    -0.109  0.471  c     z    
+##  4 old data    -0.453  6.40   d     z    
+##  5 old data     0.606  1.26   e     z    
+##  6 new data    -0.0942 1.25   a     &lt;NA&gt; 
+##  7 new data    -0.247  0.397  b     &lt;NA&gt; 
+##  8 new data     1.66   0.0881 c     &lt;NA&gt; 
+##  9 new data    -0.449  1.72   d     &lt;NA&gt; 
+## 10 new data     0.546  5.38   e     &lt;NA&gt;</code></pre>
 <p>Notice that the variable <code>cat2</code> appears in the old data set but not the new one, so the values for this variable are <code>NA</code> in the records corresponding to the new data. Plotting this field may not be useful to you, since the plot would give you no information about how the distribution changed, and you may already be aware of the column’s absense in newer data. You can remove columns that don’t appear in every data set (and you can also change the grouping variable name):</p>
 <div class="sourceCode" id="cb6"><pre class="downlit">
 <span class="va">data_stack_drop</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/stack_data.html">stack_data</a></span><span class="op">(</span><span class="va">data_list</span>, drop_mismatches <span class="op">=</span> <span class="cn">TRUE</span>, group_var <span class="op">=</span> <span class="st">"grp"</span><span class="op">)</span>
 
 <span class="va">data_stack_drop</span></pre></div>
 <pre><code>## # A tibble: 10 x 4
-##    grp        num1   num2 cat1 
-##    &lt;chr&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;
-##  1 old data  1.23  0.515  a    
-##  2 old data -0.745 0.623  b    
-##  3 old data  1.39  0.649  c    
-##  4 old data -0.417 0.0254 d    
-##  5 old data -1.22  0.453  e    
-##  6 new data  1.72  4.96   a    
-##  7 new data  0.358 2.55   b    
-##  8 new data  0.361 3.80   c    
-##  9 new data -0.203 0.0246 d    
-## 10 new data  2.38  1.96   e</code></pre>
+##    grp         num1   num2 cat1 
+##    &lt;chr&gt;      &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;
+##  1 old data  0.586  2.88   a    
+##  2 old data  0.709  1.61   b    
+##  3 old data -0.109  0.471  c    
+##  4 old data -0.453  6.40   d    
+##  5 old data  0.606  1.26   e    
+##  6 new data -0.0942 1.25   a    
+##  7 new data -0.247  0.397  b    
+##  8 new data  1.66   0.0881 c    
+##  9 new data -0.449  1.72   d    
+## 10 new data  0.546  5.38   e</code></pre>
 </div>
 <div id="using-a-pipe" class="section level2">
 <h2 class="hasAnchor">
