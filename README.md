@@ -16,7 +16,7 @@ This package is for you if:
 ## How it works
 This package is largely powered by [ggplot2](https://ggplot2.tidyverse.org/) for building plots, and the awesome [trelliscopejs](https://hafen.github.io/trelliscopejs/) by [Ryan Hafen](https://ryanhafen.com/) for providing a viewer to navigate them.
 
-For detailed instructions, see the (documentation)[https://ataustin.github.io/flyover/].
+For detailed instructions, see the [documentation](https://ataustin.github.io/flyover/).
 
 
 ## Install
