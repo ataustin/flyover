@@ -1,5 +1,5 @@
 Package: flyover
-Title: Visually Study High-Level Differences in Data Sets
+Title: flyover: visually compare distributions between groups
 Version: 0.0.0.9000
 Authors@R: 
     person(given = "Adam",

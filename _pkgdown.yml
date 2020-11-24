@@ -1,0 +1,15 @@
+template:
+  params:
+    bootswatch: cerulean
+reference:
+- title: "Optional data prep helpers"
+- contents: 
+  - enlist_data
+  - stack_data
+- title: "Creating and displaying plots"
+- contents:
+  - build_plots
+  - build_display
+- title: "Simple pre-baked plotting functions"
+- contents:
+  - starts_with("flyover_")

@@ -1,0 +1,78 @@
+---
+title: Optional Data Preparation
+date: "`r format(Sys.time(), '%Y-%m-%d')`"
+output: html_document
+---
+
+```{r setup, include = FALSE}
+library(flyover)
+```
+
+## What this article covers
+
+A typical `flyover` workflow has the following steps:
+
+1. Combine different data sets into a single table.
+2. Apply a plotting function to the columns of the table.
+3. Build a display to navigate the plots.
+
+This vignette will introduce step 1: how `flyover`'s helper functions can be used to prepare multiple data sets for comparison.
+
+This package generally relies on the conscientiousness of the user to clean up data sets prior to plotting, but the helper functions are provided for convenience as part of the `flyover` workflow.
+
+
+## Starting from separate data sets
+
+If your goal is to compare distributions of variables across multiple data sets, you must first collect those data sets into a single table prior to plotting.  `flyover` provides basic functions to accomplish this.
+
+Let's say we have two data sets we would like to compare, one from an old data process and one from a new one.  They consist of numeric and categorical data, and they don't share all the same columns.
+
+```{r create-data}
+old <- data.frame(num1 = rnorm(5),
+                  num2 = rexp(5),
+                  cat1 = letters[1:5],
+                  cat2 = rep("z", 5))
+
+new <- data.frame(num1 = rnorm(5),
+                  num2 = rexp(5),
+                  cat1 = letters[1:5])
+```
+
+The first step is to create a named list of the data.  The names will be used as the levels of a grouping variable to identify observations in later plots, so be sure to make them meaningful.
+
+```{r enlist-data}
+data_list <- enlist_data(old, new, names = c("old data", "new data"))
+
+str(data_list)
+```
+
+
+## Creating a single table
+
+All that is left is to stack the data in the list together to create one table.  In the process, a grouping variable is created, whose name defaults to `flyover_id_`.
+
+```{r stack-data-default}
+data_stack <- stack_data(data_list)
+
+data_stack
+```
+
+Notice that the variable `cat2` appears in the old data set but not the new one, so the values for this variable are `NA` in the records corresponding to the new data.  Plotting this field may not be useful to you, since the plot would give you no information about how the distribution changed, and you may already be aware of the column's absense in newer data.  You can remove columns that don't appear in every data set (and you can also change the grouping variable name):
+
+```{r stack-data-drop}
+data_stack_drop <- stack_data(data_list, drop_mismatches = TRUE, group_var = "grp")
+
+data_stack_drop
+```
+
+
+## Using a pipe
+
+Notice that these functions -- indeed, all the functions in this package -- are data-first, meaning they are pipe-friendly.  Thus you could in theory write your code like so:
+
+```
+data_stack <-
+  old %>%
+  enlist_data(new, names = c("old", "new")) %>%
+  stack_data()
+```

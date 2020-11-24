@@ -1,0 +1,86 @@
+---
+title: Gallery
+date: "`r format(Sys.time(), '%Y-%m-%d')`"
+output: html_document
+---
+
+```{r setup, include = FALSE}
+library(flyover)
+set.seed(12345)
+
+old <- data.frame(norm  = rnorm(n = 100, mean = 0),
+                  exp   = rexp(n = 100, rate = 1),
+                  chisq = rchisq(n = 100, df = 5),
+                  lnorm = rlnorm(n = 100, meanlog = 0),
+                  gamma = rgamma(n = 100, shape = 2),
+                  alpha = sample(letters[1:4], size = 100, replace = TRUE, prob = c(1, 2, 3, 4)),
+                  hilo  = sample(c("high", "low"), size = 100, replace = TRUE, prob = c(1, 2)),
+                  tf    = sample(c(TRUE, FALSE), size = 100, replace = TRUE, prob = c(1, 1)),
+                  fruit = sample(c("apple", "banana", "pear"), size = 100, replace = TRUE, prob = c(1, 2, 3)))
+
+
+new <- data.frame(norm  = rnorm(n = 100, mean = 3),
+                  exp   = rexp(n = 100, rate = 3),
+                  chisq = rchisq(n = 100, df = 10),
+                  lnorm = rlnorm(n = 100, meanlog = 2),
+                  gamma = rgamma(n = 100, shape = 4),
+                  alpha = sample(letters[1:4], size = 100, replace = TRUE, prob = c(4, 3, 2, 1)),
+                  hilo  = sample(c("high", "low"), size = 100, replace = TRUE, prob = c(2, 1)),
+                  tf    = sample(c(TRUE, FALSE), size = 100, replace = TRUE, prob = c(1, 3)),
+                  fruit = sample(c("apple", "banana", "pear"), size = 100, replace = TRUE, prob = c(3, 2, 1)))
+
+
+data_list <- enlist_data(old, new, names = c("old data", "new data"))
+my_data   <- stack_data(data_list, group_var = "source")
+```
+
+
+## What this article covers
+
+This is a gallery of built-in `flyover` functions to illustrate the options that ship with the package.
+
+See available built-in functions by accessing the help page with `?flyover_histogram`.
+
+
+## Data for this example
+
+The data used in this example is the same as in the previous vignettes.
+
+
+```{r view-data}
+str(my_data)
+```
+
+
+## Gallery of built-in functions
+
+```{r prepare-loop, include = FALSE}
+make_header <- function(function_name) {
+  cat("\n\n### ", function_name, "\n", sep = "")
+}
+
+make_iframe <- function(output_dir) {
+  cat('<iframe src="', output_dir, '/" height=500 width=850 scrolling="no" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen="true"></iframe>', sep = "")
+}
+
+
+flyover_lookup <- flyover:::get_flyover_type_lookup()
+flyover_fun_names <- names(flyover_lookup)
+
+fun_name_to_dir_name <- function(fun_name) {
+  remove_flyover <- gsub("flyover_", "display-", fun_name)
+  dir_name  <- gsub("_", "-", remove_flyover)
+  dir_name
+}
+
+output_dir_names <- setNames(fun_name_to_dir_name(flyover_fun_names),
+                             nm = flyover_fun_names)
+```
+
+
+```{r display-loop, echo = FALSE, message = FALSE, warning = FALSE, results = "asis"}
+for(fun_name in flyover_fun_names) {
+ make_header(fun_name)
+ make_iframe(output_dir_names[fun_name])
+}
+```

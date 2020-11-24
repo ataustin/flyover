@@ -1,0 +1,4 @@
+#!/bin/bash
+
+Rscript display-driver.R
+R -e "pkgdown::build_site()"

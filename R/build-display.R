@@ -28,7 +28,7 @@ build_display <- function(plot_data,
                           display_name,
                           output_dir,
                           nrow = 1,
-                          ncol = 3,
+                          ncol = 2,
                           sort_var = "variable",
                           self_contained = FALSE,
                           ...) {
