@@ -1,0 +1,112 @@
+---
+title: Creating displays
+date: "`r format(Sys.time(), '%Y-%m-%d')`"
+output: html_document
+---
+
+```{r setup, include = FALSE}
+library(flyover)
+set.seed(12345)
+
+old <- data.frame(norm  = rnorm(n = 100, mean = 0),
+                  exp   = rexp(n = 100, rate = 1),
+                  chisq = rchisq(n = 100, df = 5),
+                  lnorm = rlnorm(n = 100, meanlog = 0),
+                  gamma = rgamma(n = 100, shape = 2),
+                  alpha = sample(letters[1:4], size = 100, replace = TRUE, prob = c(1, 2, 3, 4)),
+                  hilo  = sample(c("high", "low"), size = 100, replace = TRUE, prob = c(1, 2)),
+                  tf    = sample(c(TRUE, FALSE), size = 100, replace = TRUE, prob = c(1, 1)),
+                  fruit = sample(c("apple", "banana", "pear"), size = 100, replace = TRUE, prob = c(1, 2, 3)))
+
+
+new <- data.frame(norm  = rnorm(n = 100, mean = 3),
+                  exp   = rexp(n = 100, rate = 3),
+                  chisq = rchisq(n = 100, df = 10),
+                  lnorm = rlnorm(n = 100, meanlog = 2),
+                  gamma = rgamma(n = 100, shape = 4),
+                  alpha = sample(letters[1:4], size = 100, replace = TRUE, prob = c(4, 3, 2, 1)),
+                  hilo  = sample(c("high", "low"), size = 100, replace = TRUE, prob = c(2, 1)),
+                  tf    = sample(c(TRUE, FALSE), size = 100, replace = TRUE, prob = c(1, 3)),
+                  fruit = sample(c("apple", "banana", "pear"), size = 100, replace = TRUE, prob = c(3, 2, 1)))
+
+
+data_list <- enlist_data(old, new, names = c("old data", "new data"))
+my_data   <- stack_data(data_list, group_var = "source")
+```
+
+
+## What this article covers
+
+A typical `flyover` workflow has the following steps:
+
+1. Combine different data sets into a single table.
+2. Apply a plotting function to the columns of the table.
+3. Build a display to navigate the plots.
+
+This vignette will introduce step 3: how `flyover` makes use of the `trelliscopejs` package to turn your tibble of plots into visual wonders.
+
+This vignette assumes you have a single data set composed of data from different groups for comparison.  We will show how to use that data to build a trelliscope display for the purpose of scanning distributional differences between those groups.
+
+
+## Data for this example
+
+The data used in this example is the same as in the previous vignette ("Creating plots").
+
+
+```{r view-data}
+str(my_data)
+```
+
+
+## Building and using displays
+
+To build a display, we choose a plotting function and create plotting data as seen in the previous article.  Then we pass this data to `build_display`, give the display a name, and specify a directory for the display output (this is where plots and trelliscope app files live).
+
+The following code would render a display in an R Mardown document (see the tips below for rendering displays).  Notice that the display is interactive, allowing you to page through multiple plots, change the grid size, add and remove metadata labels, filter plots by metadata features, and sort them on the same features.  Sorting and filtering the plots is a powerful way to cut out noise and focus on the plots where the most important changes are taking place.
+
+```{r display-hist, eval = FALSE}
+my_hist <- build_plots(my_data, flyover_histogram, group_var = "source")
+build_display(my_hist,
+              display_name = "histogram",
+              output_dir   = "display-histogram")
+```
+
+<iframe src="display-histogram/" height=500 width=850 scrolling="no" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen="true"></iframe>
+
+
+## Different views on your data
+
+This package makes it easy to break down data sets in different ways and compare distributions.  For example, if we decide we are interested in numeric distributions across different kinds of fruit, we could do the following:
+
+```{r display-binline, eval = FALSE}
+my_binline <- build_plots(my_data, flyover_binline_ridges, group_var = "fruit")
+build_display(my_binline,
+              display_name = "binline-ridges",
+              output_dir   = "display-binline-fruit")
+```
+
+<iframe src="display-binline-fruit/" height=500 width=850 scrolling="no" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen="true"></iframe>
+
+
+## Tips for rendering displays
+
+There are three ways you could consider rendering and viewing the display:
+
+1. point a browser directly at the output directory (_e.g._ if you are serving files from localhost);
+2. render the display from an R Mardown, ensuring that the `build_display` call is the last line of a code chunk and the output directory is a relative file path;
+3. embed the display in an iframe, pointing `src` to the display output.
+
+Finally, you can change the way your display initializes.  Advanced `trelliscopejs` controls can be passed via `...`.  See documentation [here](https://hafen.github.io/trelliscopejs/).
+
+
+## Using a pipe
+
+Notice that these functions -- indeed, all the functions in this package -- are data-first, meaning they are pipe-friendly.  Thus you could in theory write a pipeline like this:
+
+```
+old %>%
+  enlist_data(new, names = c("old data", "new data")) %>%
+  stack_data() %>%
+  build_plots(flyover_histogram) %>%
+  build_display("histograms", "display-histograms")
+```
