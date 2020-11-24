@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Creating displays • flyover</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cerulean/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
@@ -54,7 +54,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/01-preparing-data.html">Optional Data Preparation</a>
+      <a href="../articles/01-preparing-data.html">Optional data preparation</a>
     </li>
     <li>
       <a href="../articles/02-building-plots.html">Creating plots</a>
@@ -104,13 +104,13 @@
 <li>Apply a plotting function to the columns of the table.</li>
 <li>Build a display to navigate the plots.</li>
 </ol>
-<p>This vignette will introduce step 3: how <code>flyover</code> makes use of the <code>trelliscopejs</code> package to turn your tibble of plots into visual wonders.</p>
+<p>This vignette will introduce <strong>step 3</strong>: how <code>flyover</code> makes use of the <code>trelliscopejs</code> package to turn your tibble of plots into visual wonders.</p>
 <p>This vignette assumes you have a single data set composed of data from different groups for comparison. We will show how to use that data to build a trelliscope display for the purpose of scanning distributional differences between those groups.</p>
 </div>
 <div id="data-for-this-example" class="section level2">
 <h2 class="hasAnchor">
 <a href="#data-for-this-example" class="anchor"></a>Data for this example</h2>
-<p>The data used in this example is the same as in the previous vignette (“Creating plots”).</p>
+<p>The data used in this example is the same as in the previous article (“Creating plots”).</p>
 <div class="sourceCode" id="cb1"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">my_data</span><span class="op">)</span></pre></div>
 <pre><code>## tibble [200 × 10] (S3: tbl_df/tbl/data.frame)
@@ -141,7 +141,7 @@
 <div id="different-views-on-your-data" class="section level2">
 <h2 class="hasAnchor">
 <a href="#different-views-on-your-data" class="anchor"></a>Different views on your data</h2>
-<p>This package makes it easy to break down data sets in different ways and compare distributions. For example, if we decide we are interested in numeric distributions across different kinds of fruit, we could do the following:</p>
+<p>This package makes it easy to break down data sets in different ways and compare distributions. For example, if we decide we are interested in numeric distributions across different kinds of fruit, we could change the plotting function and the grouping variable:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit">
 <span class="va">my_binline</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/build_plots.html">build_plots</a></span><span class="op">(</span><span class="va">my_data</span>, <span class="va">flyover_binline_ridges</span>, group_var <span class="op">=</span> <span class="st">"fruit"</span><span class="op">)</span>
 <span class="fu"><a href="../reference/build_display.html">build_display</a></span><span class="op">(</span><span class="va">my_binline</span>,
@@ -153,11 +153,11 @@
 <div id="tips-for-rendering-displays" class="section level2">
 <h2 class="hasAnchor">
 <a href="#tips-for-rendering-displays" class="anchor"></a>Tips for rendering displays</h2>
-<p>There are three ways you could consider rendering and viewing the display:</p>
+<p>There are three common ways you can render a display:</p>
 <ol style="list-style-type: decimal">
-<li>point a browser directly at the output directory (<em>e.g.</em> if you are serving files from localhost);</li>
-<li>render the display from an R Mardown, ensuring that the <code>build_display</code> call is the last line of a code chunk and the output directory is a relative file path;</li>
-<li>embed the display in an iframe, pointing <code>src</code> to the display output.</li>
+<li>build the display from an R script and point a browser at the output directory (<em>e.g.</em> if you are serving files from localhost);</li>
+<li>embed the display in an iframe, pointing <code>src</code> to the display output;</li>
+<li>render the display from an R Mardown, ensuring that the <code>build_display</code> call is the last line of a code chunk and the output directory is a relative file path.</li>
 </ol>
 <p>Finally, you can change the way your display initializes. Advanced <code>trelliscopejs</code> controls can be passed via <code>...</code>. See documentation <a href="https://hafen.github.io/trelliscopejs/">here</a>.</p>
 </div>
