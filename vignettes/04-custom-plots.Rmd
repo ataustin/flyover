@@ -1,0 +1,104 @@
+---
+title: Using custom plots
+date: "`r format(Sys.time(), '%Y-%m-%d')`"
+output: html_document
+---
+
+```{r setup, include = FALSE}
+library(flyover)
+set.seed(12345)
+
+old <- data.frame(norm  = rnorm(n = 100, mean = 0),
+                  exp   = rexp(n = 100, rate = 1),
+                  chisq = rchisq(n = 100, df = 5),
+                  lnorm = rlnorm(n = 100, meanlog = 0),
+                  gamma = rgamma(n = 100, shape = 2),
+                  alpha = sample(letters[1:4], size = 100, replace = TRUE, prob = c(1, 2, 3, 4)),
+                  hilo  = sample(c("high", "low"), size = 100, replace = TRUE, prob = c(1, 2)),
+                  tf    = sample(c(TRUE, FALSE), size = 100, replace = TRUE, prob = c(1, 1)),
+                  fruit = sample(c("apple", "banana", "pear"), size = 100, replace = TRUE, prob = c(1, 2, 3)))
+
+
+new <- data.frame(norm  = rnorm(n = 100, mean = 3),
+                  exp   = rexp(n = 100, rate = 3),
+                  chisq = rchisq(n = 100, df = 10),
+                  lnorm = rlnorm(n = 100, meanlog = 2),
+                  gamma = rgamma(n = 100, shape = 4),
+                  alpha = sample(letters[1:4], size = 100, replace = TRUE, prob = c(4, 3, 2, 1)),
+                  hilo  = sample(c("high", "low"), size = 100, replace = TRUE, prob = c(2, 1)),
+                  tf    = sample(c(TRUE, FALSE), size = 100, replace = TRUE, prob = c(1, 3)),
+                  fruit = sample(c("apple", "banana", "pear"), size = 100, replace = TRUE, prob = c(3, 2, 1)))
+
+
+data_list <- enlist_data(old, new, names = c("old data", "new data"))
+my_data   <- stack_data(data_list, group_var = "source")
+```
+
+
+## What this article covers
+
+A typical `flyover` workflow has the following steps:
+
+1. Combine different data sets into a single table.
+2. Apply a plotting function to the columns of the table.
+3. Build a display to navigate the plots.
+
+This vignette will introduce alternative plotting functions for step 2.  While there are some built-in `flyover` plotting functions ready to use, there will be times that you need something customized to your work.  You can write your own plotting function that can still be used in a `flyover` workflow.
+
+
+## Data for this example
+
+The data used in this example is the same as in the previous vignettes.
+
+
+```{r view-data}
+str(my_data)
+```
+
+
+## Structure of `flyover` plotting functions
+
+The built-in plotting functions that ship with this package are very simple wrappers for `ggplot2` plots.  For example, this is the body of the histogram function:
+
+```{r}
+flyover_histogram
+```
+
+
+Important features to note are the following:
+
+* the first argument is the `tbl` containing all the data to plot;
+* the second and third arguments are character strings specifying the variable to plot and the grouping variable, respectively;
+* the dots (`...`) provide further modification to the plot.  These modifications can be specified in the call to `build_plots` and are passed down to these plotting functions;
+* the plotting is performed by `ggplot2`.
+
+When you write a custom plotting function, this is the general structure you should follow for compatibility with the workings of `build_plots`.  Of course, you are free to use any themes or other customizations you like.
+
+
+## Defining a custom plot
+
+Let's write a custom plot function to show how it might work.  Let's say we wish to compare distributions not through the use of histograms, but with empirical cumulative distribution functions (ECDFs).  After some research on the `ggplot2` [website](https://ggplot2.tidyverse.org/index.html), we find the right syntax.
+
+We can define the function for use in `flyover` as follows:
+
+```{r ecdf-definition}
+custom_ecdf <- function(tbl, var, group_var, ...) {
+  ggplot(tbl, aes_string(x = var, color = group_var)) +
+    stat_ecdf(size = 2, ...) +
+    theme_minimal(base_size = 14)
+}
+```
+
+
+## Using a custom plot
+
+We can now pass the custom plot function to `build_plots` in the same way as a built-in `flyover` function, _with one important addition_.  The `build_plots` function doesn't have any knowledge about what kind of data our custom plot operates on.  We need to supply this knowledge via the `keep_type` argument, which tells `build_plots` which type of variables to keep before plotting.  You must pass either `"numeric"` or `"categorical"`.  Since `custom_ecdf` operates on numeric data, that's what we choose.
+
+```{r ecdf-display, eval = FALSE}
+my_ecdf <- build_plots(my_data, custom_ecdf, "source", keep_type = "numeric")
+build_display(my_ecdf,
+              display_name = "custom ECDF",
+              output_dir   = "display-ecdf")
+```
+
+<iframe src="display-ecdf/" height=500 width=850 scrolling="no" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen="true"></iframe>
