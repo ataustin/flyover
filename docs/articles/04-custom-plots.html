@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Using custom plots • flyover</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cerulean/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
@@ -54,7 +54,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/01-preparing-data.html">Optional Data Preparation</a>
+      <a href="../articles/01-preparing-data.html">Optional data preparation</a>
     </li>
     <li>
       <a href="../articles/02-building-plots.html">Creating plots</a>
@@ -104,7 +104,7 @@
 <li>Apply a plotting function to the columns of the table.</li>
 <li>Build a display to navigate the plots.</li>
 </ol>
-<p>This vignette will introduce alternative plotting functions for step 2. While there are some built-in <code>flyover</code> plotting functions ready to use, there will be times that you need something customized to your work. You can write your own plotting function that can still be used in a <code>flyover</code> workflow.</p>
+<p>This vignette will introduce <strong>alternative plotting functions</strong> for step 2. While there are some built-in <code>flyover</code> plotting functions ready to use, there will be times that you need something customized. You can write your own plotting function to pass into the <code>build_plots</code> function.</p>
 </div>
 <div id="data-for-this-example" class="section level2">
 <h2 class="hasAnchor">
@@ -127,15 +127,13 @@
 <div id="structure-of-flyover-plotting-functions" class="section level2">
 <h2 class="hasAnchor">
 <a href="#structure-of-flyover-plotting-functions" class="anchor"></a>Structure of <code>flyover</code> plotting functions</h2>
-<p>The built-in plotting functions that ship with this package are very simple wrappers for <code>ggplot2</code> plots. For example, this is the body of the histogram function:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="va">flyover_histogram</span></pre></div>
+<p>The built-in plotting functions that ship with this package are very simple wrappers for <code>ggplot2</code> plots. For example, this is the body of the function <code>flyover_histogram</code>:</p>
 <pre><code>## function (tbl, var, group_var, ...) 
 ## {
 ##     ggplot(tbl, aes_string(x = var, fill = group_var)) + geom_histogram(position = "identity", 
 ##         alpha = 0.5, ...) + theme_minimal(base_size = 14)
 ## }
-## &lt;bytecode: 0x55d3957fc5e0&gt;
+## &lt;bytecode: 0x55c4e4585be0&gt;
 ## &lt;environment: namespace:flyover&gt;</code></pre>
 <p>Important features to note are the following:</p>
 <ul>
@@ -149,9 +147,9 @@
 <div id="defining-a-custom-plot" class="section level2">
 <h2 class="hasAnchor">
 <a href="#defining-a-custom-plot" class="anchor"></a>Defining a custom plot</h2>
-<p>Let’s write a custom plot function to show how it might work. Let’s say we wish to compare distributions not through the use of histograms, but with empirical cumulative distribution functions (ECDFs). After some research on the <code>ggplot2</code> <a href="https://ggplot2.tidyverse.org/index.html">website</a>, we find the right syntax.</p>
+<p>Let’s say we wish to compare distributions not through the use of histograms, but with empirical cumulative distribution functions (ECDFs). After some research on the <code>ggplot2</code> <a href="https://ggplot2.tidyverse.org/index.html">website</a>, we find the right syntax.</p>
 <p>We can define the function for use in <code>flyover</code> as follows:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit">
+<div class="sourceCode" id="cb4"><pre class="downlit">
 <span class="va">custom_ecdf</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">tbl</span>, <span class="va">var</span>, <span class="va">group_var</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span>
   <span class="fu">ggplot</span><span class="op">(</span><span class="va">tbl</span>, <span class="fu">aes_string</span><span class="op">(</span>x <span class="op">=</span> <span class="va">var</span>, color <span class="op">=</span> <span class="va">group_var</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
     <span class="fu">stat_ecdf</span><span class="op">(</span>size <span class="op">=</span> <span class="fl">2</span>, <span class="va">...</span><span class="op">)</span> <span class="op">+</span>
@@ -162,7 +160,7 @@
 <h2 class="hasAnchor">
 <a href="#using-a-custom-plot" class="anchor"></a>Using a custom plot</h2>
 <p>We can now pass the custom plot function to <code>build_plots</code> in the same way as a built-in <code>flyover</code> function, <em>with one important addition</em>. The <code>build_plots</code> function doesn’t have any knowledge about what kind of data our custom plot operates on. We need to supply this knowledge via the <code>keep_type</code> argument, which tells <code>build_plots</code> which type of variables to keep before plotting. You must pass either <code>"numeric"</code> or <code>"categorical"</code>. Since <code>custom_ecdf</code> operates on numeric data, that’s what we choose.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit">
+<div class="sourceCode" id="cb5"><pre class="downlit">
 <span class="va">my_ecdf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/build_plots.html">build_plots</a></span><span class="op">(</span><span class="va">my_data</span>, <span class="va">custom_ecdf</span>, <span class="st">"source"</span>, keep_type <span class="op">=</span> <span class="st">"numeric"</span><span class="op">)</span>
 <span class="fu"><a href="../reference/build_display.html">build_display</a></span><span class="op">(</span><span class="va">my_ecdf</span>,
               display_name <span class="op">=</span> <span class="st">"custom ECDF"</span>,

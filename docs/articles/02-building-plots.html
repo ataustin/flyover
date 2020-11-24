@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Creating plots • flyover</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cerulean/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
@@ -54,7 +54,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/01-preparing-data.html">Optional Data Preparation</a>
+      <a href="../articles/01-preparing-data.html">Optional data preparation</a>
     </li>
     <li>
       <a href="../articles/02-building-plots.html">Creating plots</a>
@@ -104,13 +104,13 @@
 <li>Apply a plotting function to the columns of the table.</li>
 <li>Build a display to navigate the plots.</li>
 </ol>
-<p>This vignette will introduce step 2: how <code>flyover</code>’s plotting functions work and how to easily build comparison plots for different types of data.</p>
+<p>This vignette will introduce <strong>step 2</strong>: how <code>flyover</code>’s plotting functions work and how to easily build comparison plots for different types of data.</p>
 <p>This vignette assumes you have a single data set composed of data from different groups for comparison. We will show how to use that data to build a collection of plots for comparing distributions between groups.</p>
 </div>
 <div id="data-for-this-example" class="section level2">
 <h2 class="hasAnchor">
 <a href="#data-for-this-example" class="anchor"></a>Data for this example</h2>
-<p>We simulate a data set with numeric and categorical variables from two different sources. Each source has a slightly different data-generating process. Note the <code>source</code> column. This takes on values of <code>old data</code> or <code>new data</code> and represents our different data sources we will compare. We wish to understand the distributional differences of the other variables between these sources.</p>
+<p>We simulate a data set with numeric and categorical variables from two different sources (called “old data” and “new data”). Each source has a slightly different data-generating process. Note the <code>source</code> column where these values are stored. We wish to understand the distributional differences of the other variables between these sources.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">my_data</span><span class="op">)</span></pre></div>
 <pre><code>## tibble [200 × 10] (S3: tbl_df/tbl/data.frame)
@@ -125,12 +125,14 @@
 ##  $ tf    : logi [1:200] TRUE FALSE TRUE TRUE FALSE TRUE ...
 ##  $ fruit : chr [1:200] "pear" "pear" "apple" "pear" ...</code></pre>
 </div>
-<div id="pre-packaged-plotting-functions" class="section level2">
+<div id="built-in-plotting-functions" class="section level2">
 <h2 class="hasAnchor">
-<a href="#pre-packaged-plotting-functions" class="anchor"></a>Pre-packaged plotting functions</h2>
+<a href="#built-in-plotting-functions" class="anchor"></a>Built-in plotting functions</h2>
 <p>Plotting in <code>flyover</code> comes in two flavors, numeric and categorical. The package comes with basic built-in plotting functions that operate on columns of one of these types, and ignores columns of the other type. This means you don’t have to pre-filter a data frame by the type of data that the plots will use.</p>
-<p><em>Numeric</em> plotting functions will keep integer and float type variables and ignore everything else.</p>
-<p><em>Categorical</em> plotting functions will keep character, factor, and logical type variables and will ignore everything else.</p>
+<ul>
+<li><p><em>Numeric</em> plotting functions will keep integer and float type variables and ignore everything else.</p></li>
+<li><p><em>Categorical</em> plotting functions will keep character, factor, and logical type variables and will ignore everything else.</p></li>
+</ul>
 <p>Currently, <code>flyover</code>’s built-in functions and the data types on which they act are:</p>
 <table class="table">
 <thead><tr class="header">
@@ -164,12 +166,17 @@
 </tr>
 </tbody>
 </table>
-<p>Plotting functions ending with <code>_ridges</code> are derived from the package <code>ggridges</code> (<a href="https://cran.r-project.org/web/packages/ggridges/vignettes/introduction.html">documentation</a>) and are well suited to comparing numeric distributions through time, <em>e.g.</em> for examining data drift across regular data pulls through time.</p>
+<p>Plotting functions ending with <code>_ridges</code> are derived from the package <code>ggridges</code> (<a href="https://cran.r-project.org/web/packages/ggridges/vignettes/introduction.html">documentation</a>) and are well suited to comparing numeric distributions through time, <em>e.g.</em> for examining data drift across data pulls occurring on regular intervals.</p>
 </div>
 <div id="building-plots" class="section level2">
 <h2 class="hasAnchor">
 <a href="#building-plots" class="anchor"></a>Building plots</h2>
-<p>To build plots, you must specify at least three things: * a data frame or similar object (such as a tibble or data.table) * the <code>flyover</code> plotting function you wish to use * the name of the variable that distinguishes groups (defaults to <code>flyover_id_</code> which is the default output of <code>stack_data</code>).</p>
+<p>To build plots, you must specify at least three things:</p>
+<ul>
+<li>a data frame or similar object (such as a <code>tibble</code> or <code>data.table</code>)</li>
+<li>the <code>flyover</code> plotting function you wish to use</li>
+<li>the name of the variable that distinguishes groups (defaults to <code>flyover_id_</code> which is the default output of <code>stack_data</code>).</li>
+</ul>
 <p>For each variable of the type associated with your chosen plotting function, <code>flyover</code> will generate a plot. However, these plots are not printed yet; they are merely stored in a tibble until they are used to build displays.</p>
 <div id="numeric-plots" class="section level3">
 <h3 class="hasAnchor">
@@ -190,11 +197,12 @@
 <div class="sourceCode" id="cb5"><pre class="downlit">
 <span class="va">my_histograms</span><span class="op">$</span><span class="va">plot</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></pre></div>
 <p><img src="02-building-plots_files/figure-html/print-hist-1.png" width="700"></p>
-<p>You are not limited to default look of the built-in plotting functions. You can modify these plots by passing additional <code>ggplot2</code> elements that you wish to add as a list:</p>
+<p>You are not limited to the default appearance of the built-in plotting functions. You can modify these plots by passing additional <code>ggplot2</code> elements as a list:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit">
 <span class="va">my_histograms_mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/build_plots.html">build_plots</a></span><span class="op">(</span><span class="va">my_data</span>, <span class="va">flyover_histogram</span>, group_var <span class="op">=</span> <span class="st">"source"</span>,
                                  plot_mods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu">xlab</span><span class="op">(</span><span class="st">"new X-axis label"</span><span class="op">)</span>,
-                                                  <span class="fu">theme_classic</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+                                                  <span class="fu">theme_classic</span><span class="op">(</span><span class="op">)</span>,
+                                                  <span class="fu">scale_fill_viridis_d</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 
 <span class="va">my_histograms_mod</span><span class="op">$</span><span class="va">plot</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></pre></div>
 <p><img src="02-building-plots_files/figure-html/modify-hist-1.png" width="700"></p>
@@ -202,7 +210,7 @@
 <div id="categorical-plots" class="section level3">
 <h3 class="hasAnchor">
 <a href="#categorical-plots" class="anchor"></a>Categorical plots</h3>
-<p>In a similar way, we can compare distributions of categorical variables across groups by examining their counts using bar plots.</p>
+<p>In a similar way, we can compare distributions of categorical variables across groups by examining their proportions using bar plots.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit">
 <span class="va">my_bars</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/build_plots.html">build_plots</a></span><span class="op">(</span><span class="va">my_data</span>, <span class="va">flyover_bar_fill</span>, group_var <span class="op">=</span> <span class="st">"source"</span><span class="op">)</span>
 <span class="va">my_bars</span></pre></div>
