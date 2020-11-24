@@ -43,14 +43,14 @@ A typical `flyover` workflow has the following steps:
 2. Apply a plotting function to the columns of the table.
 3. Build a display to navigate the plots.
 
-This vignette will introduce step 3: how `flyover` makes use of the `trelliscopejs` package to turn your tibble of plots into visual wonders.
+This vignette will introduce **step 3**: how `flyover` makes use of the `trelliscopejs` package to turn your tibble of plots into visual wonders.
 
 This vignette assumes you have a single data set composed of data from different groups for comparison.  We will show how to use that data to build a trelliscope display for the purpose of scanning distributional differences between those groups.
 
 
 ## Data for this example
 
-The data used in this example is the same as in the previous vignette ("Creating plots").
+The data used in this example is the same as in the previous article ("Creating plots").
 
 
 ```{r view-data}
@@ -76,7 +76,7 @@ build_display(my_hist,
 
 ## Different views on your data
 
-This package makes it easy to break down data sets in different ways and compare distributions.  For example, if we decide we are interested in numeric distributions across different kinds of fruit, we could do the following:
+This package makes it easy to break down data sets in different ways and compare distributions.  For example, if we decide we are interested in numeric distributions across different kinds of fruit, we could change the plotting function and the grouping variable:
 
 ```{r display-binline, eval = FALSE}
 my_binline <- build_plots(my_data, flyover_binline_ridges, group_var = "fruit")
@@ -90,11 +90,12 @@ build_display(my_binline,
 
 ## Tips for rendering displays
 
-There are three ways you could consider rendering and viewing the display:
+There are three common ways you can render a display:
 
-1. point a browser directly at the output directory (_e.g._ if you are serving files from localhost);
-2. render the display from an R Mardown, ensuring that the `build_display` call is the last line of a code chunk and the output directory is a relative file path;
-3. embed the display in an iframe, pointing `src` to the display output.
+1. build the display from an R script and point a browser at the output directory (_e.g._ if you are serving files from localhost);
+2. embed the display in an iframe, pointing `src` to the display output;
+3. render the display from an R Mardown, ensuring that the `build_display` call is the last line of a code chunk and the output directory is a relative file path.
+
 
 Finally, you can change the way your display initializes.  Advanced `trelliscopejs` controls can be passed via `...`.  See documentation [here](https://hafen.github.io/trelliscopejs/).
 

@@ -43,7 +43,7 @@ A typical `flyover` workflow has the following steps:
 2. Apply a plotting function to the columns of the table.
 3. Build a display to navigate the plots.
 
-This vignette will introduce alternative plotting functions for step 2.  While there are some built-in `flyover` plotting functions ready to use, there will be times that you need something customized to your work.  You can write your own plotting function that can still be used in a `flyover` workflow.
+This vignette will introduce **alternative plotting functions** for step 2.  While there are some built-in `flyover` plotting functions ready to use, there will be times that you need something customized.  You can write your own plotting function to pass into the `build_plots` function.
 
 
 ## Data for this example
@@ -58,9 +58,9 @@ str(my_data)
 
 ## Structure of `flyover` plotting functions
 
-The built-in plotting functions that ship with this package are very simple wrappers for `ggplot2` plots.  For example, this is the body of the histogram function:
+The built-in plotting functions that ship with this package are very simple wrappers for `ggplot2` plots.  For example, this is the body of the function `flyover_histogram`:
 
-```{r}
+```{r fun-body, echo = FALSE}
 flyover_histogram
 ```
 
@@ -77,7 +77,7 @@ When you write a custom plotting function, this is the general structure you sho
 
 ## Defining a custom plot
 
-Let's write a custom plot function to show how it might work.  Let's say we wish to compare distributions not through the use of histograms, but with empirical cumulative distribution functions (ECDFs).  After some research on the `ggplot2` [website](https://ggplot2.tidyverse.org/index.html), we find the right syntax.
+Let's say we wish to compare distributions not through the use of histograms, but with empirical cumulative distribution functions (ECDFs).  After some research on the `ggplot2` [website](https://ggplot2.tidyverse.org/index.html), we find the right syntax.
 
 We can define the function for use in `flyover` as follows:
 

@@ -1,5 +1,5 @@
 ---
-title: Optional Data Preparation
+title: Optional data preparation
 date: "`r format(Sys.time(), '%Y-%m-%d')`"
 output: html_document
 ---
@@ -17,7 +17,7 @@ A typical `flyover` workflow has the following steps:
 2. Apply a plotting function to the columns of the table.
 3. Build a display to navigate the plots.
 
-This vignette will introduce step 1: how `flyover`'s helper functions can be used to prepare multiple data sets for comparison.
+This vignette will introduce **step 1**: how `flyover`'s helper functions can be used to prepare multiple data sets for comparison.
 
 This package generally relies on the conscientiousness of the user to clean up data sets prior to plotting, but the helper functions are provided for convenience as part of the `flyover` workflow.
 
@@ -48,7 +48,7 @@ str(data_list)
 ```
 
 
-## Creating a single table
+## Creating a single table from a named list
 
 All that is left is to stack the data in the list together to create one table.  In the process, a grouping variable is created, whose name defaults to `flyover_id_`.
 

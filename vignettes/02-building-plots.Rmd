@@ -44,27 +44,27 @@ A typical `flyover` workflow has the following steps:
 2. Apply a plotting function to the columns of the table.
 3. Build a display to navigate the plots.
 
-This vignette will introduce step 2: how `flyover`'s plotting functions work and how to easily build comparison plots for different types of data.
+This vignette will introduce **step 2**: how `flyover`'s plotting functions work and how to easily build comparison plots for different types of data.
 
 This vignette assumes you have a single data set composed of data from different groups for comparison.  We will show how to use that data to build a collection of plots for comparing distributions between groups.
 
 
 ## Data for this example
 
-We simulate a data set with numeric and categorical variables from two different sources.  Each source has a slightly different data-generating process.  Note the `source` column.  This takes on values of `old data` or `new data` and represents our different data sources we will compare.  We wish to understand the distributional differences of the other variables between these sources.
+We simulate a data set with numeric and categorical variables from two different sources (called "old data" and "new data").  Each source has a slightly different data-generating process.  Note the `source` column where these values are stored.  We wish to understand the distributional differences of the other variables between these sources.
 
 
 ```{r view-data}
 str(my_data)
 ```
 
-## Pre-packaged plotting functions
+## Built-in plotting functions
 
 Plotting in `flyover` comes in two flavors, numeric and categorical.  The package comes with basic built-in plotting functions that operate on columns of one of these types, and ignores columns of the other type.  This means you don't have to pre-filter a data frame by the type of data that the plots will use.
 
-*Numeric* plotting functions will keep integer and float type variables and ignore everything else.
+* _Numeric_ plotting functions will keep integer and float type variables and ignore everything else.
 
-*Categorical* plotting functions will keep character, factor, and logical type variables and will ignore everything else.
+* _Categorical_ plotting functions will keep character, factor, and logical type variables and will ignore everything else.
 
 Currently, `flyover`'s built-in functions and the data types on which they act are:
 
@@ -77,13 +77,14 @@ lookup_df <- data.frame(function_name = names(lookup),
 knitr::kable(lookup_df)
 ```
 
-Plotting functions ending with `_ridges` are derived from the package `ggridges` ([documentation](https://cran.r-project.org/web/packages/ggridges/vignettes/introduction.html)) and are well suited to comparing numeric distributions through time, _e.g._ for examining data drift across regular data pulls through time.
+Plotting functions ending with `_ridges` are derived from the package `ggridges` ([documentation](https://cran.r-project.org/web/packages/ggridges/vignettes/introduction.html)) and are well suited to comparing numeric distributions through time, _e.g._ for examining data drift across data pulls occurring on regular intervals.
 
 
 ## Building plots
 
 To build plots, you must specify at least three things:
-* a data frame or similar object (such as a tibble or data.table)
+
+* a data frame or similar object (such as a `tibble` or `data.table`)
 * the `flyover` plotting function you wish to use
 * the name of the variable that distinguishes groups (defaults to `flyover_id_` which is the default output of `stack_data`).
 
@@ -106,12 +107,13 @@ my_histograms$plot[[1]]
 ```
 
 
-You are not limited to default look of the built-in plotting functions.  You can modify these plots by passing additional `ggplot2` elements that you wish to add as a list:
+You are not limited to the default appearance of the built-in plotting functions.  You can modify these plots by passing additional `ggplot2` elements as a list:
 
 ```{r modify-hist, message = FALSE}
 my_histograms_mod <- build_plots(my_data, flyover_histogram, group_var = "source",
                                  plot_mods = list(xlab("new X-axis label"),
-                                                  theme_classic()))
+                                                  theme_classic(),
+                                                  scale_fill_viridis_d()))
 
 my_histograms_mod$plot[[1]]
 ```
@@ -119,7 +121,7 @@ my_histograms_mod$plot[[1]]
 
 ### Categorical plots
 
-In a similar way, we can compare distributions of categorical variables across groups by examining their counts using bar plots.
+In a similar way, we can compare distributions of categorical variables across groups by examining their proportions using bar plots.
 
 ```{r make-bar}
 my_bars <- build_plots(my_data, flyover_bar_fill, group_var = "source")
