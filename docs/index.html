@@ -103,7 +103,7 @@
 <h2 class="hasAnchor">
 <a href="#how-it-works" class="anchor"></a>How it works</h2>
 <p>This package is largely powered by <a href="https://ggplot2.tidyverse.org/">ggplot2</a> for building plots, and the awesome <a href="https://hafen.github.io/trelliscopejs/">trelliscopejs</a> by <a href="https://ryanhafen.com/">Ryan Hafen</a> for providing a viewer to navigate them.</p>
-<p>Vignette coming soon.</p>
+<p>For detailed instructions, see the <a href="https://ataustin.github.io/flyover/">documentation</a>.</p>
 </div>
 <div id="install" class="section level2">
 <h2 class="hasAnchor">
@@ -125,9 +125,8 @@
 new_data &lt;- read.csv("new-data.csv")
 
 enlist_data(old_data, new_data, names = c("old", "new")) %&gt;%
-  built_plots(flyover_histogram) %&gt;%
+  build_plots(flyover_histogram) %&gt;%
   build_display(display_name = "histograms", output_dir = "display-hist")</code></pre>
-<p>See the package documentation for more information about <code>flyover</code>’s functions.</p>
 </div>
 <div id="tips" class="section level2">
 <h2 class="hasAnchor">

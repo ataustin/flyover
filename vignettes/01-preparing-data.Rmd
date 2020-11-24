@@ -6,6 +6,7 @@ output: html_document
 
 ```{r setup, include = FALSE}
 library(flyover)
+set.seed(12345)
 ```
 
 ## What this article covers

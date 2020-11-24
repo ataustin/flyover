@@ -16,7 +16,7 @@ This package is for you if:
 ## How it works
 This package is largely powered by [ggplot2](https://ggplot2.tidyverse.org/) for building plots, and the awesome [trelliscopejs](https://hafen.github.io/trelliscopejs/) by [Ryan Hafen](https://ryanhafen.com/) for providing a viewer to navigate them.
 
-Vignette coming soon.
+For detailed instructions, see the [documentation](https://ataustin.github.io/flyover/).
 
 
 ## Install
@@ -39,11 +39,9 @@ old_data <- read.csv("old-data.csv")
 new_data <- read.csv("new-data.csv")
 
 enlist_data(old_data, new_data, names = c("old", "new")) %>%
-  built_plots(flyover_histogram) %>%
+  build_plots(flyover_histogram) %>%
   build_display(display_name = "histograms", output_dir = "display-hist")
 ```
-
-See the package documentation for more information about `flyover`'s functions.
 
 
 ## Tips
