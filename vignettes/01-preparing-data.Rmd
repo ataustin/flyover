@@ -8,9 +8,15 @@ output: html_document
 library(flyover)
 ```
 
-## What this will cover
+## What this article covers
 
-This vignette will demonstrate how `flyover`'s helper functions can be used to prepare multiple data sets for comparison.
+A typical `flyover` workflow has the following steps:
+
+1. Combine different data sets into a single table.
+2. Apply a plotting function to the columns of the table.
+3. Build a display to navigate the plots.
+
+This vignette will introduce step 1: how `flyover`'s helper functions can be used to prepare multiple data sets for comparison.
 
 This package generally relies on the conscientiousness of the user to clean up data sets prior to plotting, but the helper functions are provided for convenience as part of the `flyover` workflow.
 
