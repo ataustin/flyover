@@ -14,6 +14,9 @@
 #' @param ncol The number of columns of plots to display.
 #' @param sort_var Character string of the cognostic to sort on.  Defaults to the
 #'                 variable name, but can be any of the cognostics of interest.
+#' @param sort_direction Character string specifying direction of sort;
+#'                       can be "asc" for ascending or "desc" for descending.
+#'                       Defaults to "asc".
 #' @param self_contained Logical; whether to render the display as a
 #'                       self-contained HTML document.  This should be set
 #'                       to \code{TRUE} for including the display in an
@@ -30,6 +33,7 @@ build_display <- function(plot_data,
                           nrow = 1,
                           ncol = 2,
                           sort_var = "variable",
+                          sort_direction = "asc",
                           self_contained = FALSE,
                           ...) {
   
@@ -48,6 +52,6 @@ build_display <- function(plot_data,
                              ncol = ncol,
                              self_contained = self_contained,
                              panel_col = "plot",
-                             state = list(sort = trelliscopejs::sort_spec(sort_var)),
+                             state = list(sort = trelliscopejs::sort_spec(sort_var, sort_direction)),
                              ...)
 }

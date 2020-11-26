@@ -5,8 +5,8 @@ keep_cols_by_type <- function(tbl, type) {
   }
   
   keep_fun <- switch(type,
-                     numeric = is.numeric,
-                     categorical = function(x) is.character(x) | is.factor(x) | is.logical(x))
+                     numeric = is_flyover_numeric,
+                     categorical = is_flyover_categorical)
   
   tbl <- tbl[vapply(tbl, keep_fun, logical(1))]
   
@@ -16,4 +16,14 @@ keep_cols_by_type <- function(tbl, type) {
   }
   
   tbl
+}
+
+
+is_flyover_numeric <- function(x) {
+  is.numeric(x)
+}
+
+
+is_flyover_categorical <- function(x) {
+  is.character(x) || is.factor(x) || is.logical(x)
 }
