@@ -32,7 +32,7 @@ test_that("errors are handled", {
   names(plots)[1] <- "fiddlesticks"
   expect_error(build_display(plots, "test_name", "test_output"))
   
-  names(plots) <- c("variable", "fiddlesticks")
+  names(plots)[1:2] <- c("variable", "fiddlesticks")
   expect_error(build_display(plots, "test_name", "test_output"))
   
   expect_false(file.exists("test_output"))
