@@ -8,7 +8,7 @@ output: html_document
 library(flyover)
 set.seed(12345)
 
-old <- data.frame(norm  = rnorm(n = 100, mean = 0),
+old <- data.frame(norm  = rnorm(n = 100, mean = 1),
                   exp   = rexp(n = 100, rate = 1),
                   chisq = rchisq(n = 100, df = 5),
                   lnorm = rlnorm(n = 100, meanlog = 0),
@@ -62,7 +62,7 @@ str(my_data)
 
 To build a display, we choose a plotting function and create plotting data as seen in the previous article.  Then we pass this data to `build_display`, give the display a name, and specify a directory for the display output (this is where plots and trelliscope app files live).
 
-The following code would render a display in an R Mardown document (see the tips below for rendering displays).  Notice that the display is interactive, allowing you to page through multiple plots, change the grid size, add and remove metadata labels, filter plots by metadata features, and sort them on the same features.  Sorting and filtering the plots is a powerful way to cut out noise and focus on the plots where the most important changes are taking place.
+The following code would render a display in an R Mardown document (see the tips below for rendering displays).  Notice that the display is interactive, allowing you to page through multiple plots, change the grid size, add and remove cognostic (metadata) labels, filter plots by cognostics, and sort them on the same features.  Sorting and filtering the plots is a powerful way to cut out noise and focus on the plots where the most important changes are taking place.  For example, if you were interested in the variables demonstrating the greatest variation in central tendency, you migth sort by `pct_change_median` descending.  (See `?build_display` for how to set the default sorting cognostic.)
 
 ```{r display-hist, eval = FALSE}
 my_hist <- build_plots(my_data, flyover_histogram, group_var = "source")

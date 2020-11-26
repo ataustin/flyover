@@ -65,14 +65,19 @@ build_plots <- function(stack, plot_fun, group_var = "flyover_id_",
   plot_vars <- names(stack_reduced)
   plot_list <- setNames(vector(mode = "list", length = length(plot_vars)),
                         nm = plot_vars)
+  cog_list  <- plot_list
+  
   stack_reduced[, group_var] <- stack[, group_var, drop = TRUE]
   
   for(var in plot_vars) {
-    plot_list[[var]] <- plot_fun(stack_reduced, var, group_var, ...) + plot_mods
+    plot_data <- stack_reduced[, c(var, group_var)] # reduce size of gg object by shrinking data that gets stored
+    plot_list[[var]] <- plot_fun(plot_data, var, group_var, ...) + plot_mods
+    cog_list[[var]] <- build_cognostics(keep_type, plot_data, var, group_var)
   }
   
   output <- tibble::tibble(variable = plot_vars,
-                           plot     = plot_list)
+                           plot     = plot_list,
+                           cogs     = cog_list)
   output
 }
 

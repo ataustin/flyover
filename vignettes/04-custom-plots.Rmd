@@ -8,7 +8,7 @@ output: html_document
 library(flyover)
 set.seed(12345)
 
-old <- data.frame(norm  = rnorm(n = 100, mean = 0),
+old <- data.frame(norm  = rnorm(n = 100, mean = 1),
                   exp   = rexp(n = 100, rate = 1),
                   chisq = rchisq(n = 100, df = 5),
                   lnorm = rlnorm(n = 100, meanlog = 0),

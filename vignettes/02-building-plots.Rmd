@@ -9,7 +9,7 @@ library(flyover)
 library(ggplot2)
 set.seed(12345)
 
-old <- data.frame(norm  = rnorm(n = 100, mean = 0),
+old <- data.frame(norm  = rnorm(n = 100, mean = 1),
                   exp   = rexp(n = 100, rate = 1),
                   chisq = rchisq(n = 100, df = 5),
                   lnorm = rlnorm(n = 100, meanlog = 0),
@@ -100,7 +100,7 @@ my_histograms <- build_plots(my_data, flyover_histogram, group_var = "source")
 my_histograms
 ```
 
-Notice that the output is a tibble containing one plot for each relevant variable (relevant in the sense that they are numeric).  The function does not print the plots directly at this stage.  However, the individual plots can still be accessed:
+Notice that the output is a tibble having column `plot` which contains one plot for each numeric variable in the data.  (See below for a discussion on the `cogs` columns.)  The function does not print the plots directly at this stage.  However, the individual plots can still be accessed:
 
 ```{r print-hist, message = FALSE}
 my_histograms$plot[[1]]
@@ -133,6 +133,25 @@ As before, you can view individual plots by calling them from this tibble.
 ```{r print-bar, message = FALSE}
 my_bars$plot[[1]]
 ```
+
+
+## Cognostics
+
+The tibble returned by `build_plots` contains a column called `cogs` which is short for "cognostics".  You can read more about cognostics in the `trelliscopejs` [documentation](https://hafen.github.io/trelliscopejs/articles/trelliscopejs.html). In short, they are pieces of metadata that are associated with each plot in order to sort and filter plots.  They are stored as tibbles, and for numeric plots they look like this:
+
+```{r}
+str(my_histograms$cogs[[1]])
+```
+
+These are summaries of features of the data used to generate the first plot.  They represent the largest differences (in percentage terms) between any groups for that variable.
+
+For categorical plots, the cognostics look like this:
+
+```{r}
+str(my_bars$cogs[[1]])
+```
+
+The next article will clarify how cognostics are used in trelliscope displays.
 
 
 ## Using a pipe

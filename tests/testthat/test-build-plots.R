@@ -7,12 +7,13 @@ stack <- data.frame(grp  = rep(c("old", "new"), each = 10),
                     cat2 = as.character(101:120),
                     cat3 = rep(TRUE, 20))
 
+col_names <- c("variable", "plot", "cogs")
 
 test_that("tibble output with numeric flyover function", {
   output <- build_plots(stack, flyover_histogram, group_var = "grp")
   expect_is(output, "tbl_df")
   expect_equal(nrow(output), 2)
-  expect_equal(names(output), c("variable", "plot"))
+  expect_equal(names(output), col_names)
   expect_is(output$plot, "list")
   expect_is(output$plot[[1]], "gg")
 })
@@ -22,7 +23,7 @@ test_that("tibble output with categorical flyover function", {
   output <- build_plots(stack, flyover_bar_dodge, group_var = "grp")
   expect_is(output, "tbl_df")
   expect_equal(nrow(output), 3)
-  expect_equal(names(output), c("variable", "plot"))
+  expect_equal(names(output), col_names)
   expect_is(output$plot, "list")
   expect_is(output$plot[[1]], "gg")
 })
@@ -37,14 +38,14 @@ test_that("tibble output with custom ggplot function", {
   output <- build_plots(stack, custom_plot, "grp", keep_type = "numeric")
   expect_is(output, "tbl_df")
   expect_equal(nrow(output), 2)
-  expect_equal(names(output), c("variable", "plot"))
+  expect_equal(names(output), col_names)
   expect_is(output$plot, "list")
   expect_is(output$plot[[1]], "gg")
   
   output <- build_plots(stack, custom_plot, "grp", keep_type = "categorical")
   expect_is(output, "tbl_df")
   expect_equal(nrow(output), 3)
-  expect_equal(names(output), c("variable", "plot"))
+  expect_equal(names(output), col_names)
   expect_is(output$plot, "list")
   expect_is(output$plot[[1]], "gg")
   
