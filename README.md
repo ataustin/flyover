@@ -43,7 +43,7 @@ enlist_data(old_data, new_data, names = c("old data", "new data")) %>%
   build_display(display_name = "histograms", output_dir = "display-hist")
 ```
 
-<iframe src="docs/articles/display-histogram/" height=500 width=850 scrolling="no" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen="true"></iframe>
+Get started with the articles in the [documentation](https://ataustin.github.io/flyover/) or jump right into the gallery of [displays](https://ataustin.github.io/flyover/articles/05-gallery.html).
 
 
 ## Tips
