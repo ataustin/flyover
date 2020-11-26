@@ -86,7 +86,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Using custom plots</h1>
             
-            <h4 class="date">2020-11-24</h4>
+            <h4 class="date">2020-11-26</h4>
       
       
       <div class="hidden name"><code>04-custom-plots.Rmd</code></div>
@@ -114,7 +114,7 @@
 <span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">my_data</span><span class="op">)</span></pre></div>
 <pre><code>## tibble [200 × 10] (S3: tbl_df/tbl/data.frame)
 ##  $ source: chr [1:200] "old data" "old data" "old data" "old data" ...
-##  $ norm  : num [1:200] 0.586 0.709 -0.109 -0.453 0.606 ...
+##  $ norm  : num [1:200] 1.586 1.709 0.891 0.547 1.606 ...
 ##  $ exp   : num [1:200] 0.1772 0.0858 0.3273 0.5311 2.5615 ...
 ##  $ chisq : num [1:200] 4.53 6.54 4.92 3.55 2.71 ...
 ##  $ lnorm : num [1:200] 1.024 0.619 1.016 4.919 1.054 ...
@@ -133,7 +133,7 @@
 ##     ggplot(tbl, aes_string(x = var, fill = group_var)) + geom_histogram(position = "identity", 
 ##         alpha = 0.5, ...) + theme_minimal(base_size = 14)
 ## }
-## &lt;bytecode: 0x55c4e4585be0&gt;
+## &lt;bytecode: 0x55cf1314b7b8&gt;
 ## &lt;environment: namespace:flyover&gt;</code></pre>
 <p>Important features to note are the following:</p>
 <ul>
