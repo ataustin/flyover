@@ -38,10 +38,12 @@ If you are comparing distribtions of variables between an old data process and a
 old_data <- read.csv("old-data.csv")
 new_data <- read.csv("new-data.csv")
 
-enlist_data(old_data, new_data, names = c("old", "new")) %>%
+enlist_data(old_data, new_data, names = c("old data", "new data")) %>%
   build_plots(flyover_histogram) %>%
   build_display(display_name = "histograms", output_dir = "display-hist")
 ```
+
+<iframe src="docs/articles/display-histogram/" height=500 width=850 scrolling="no" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen="true"></iframe>
 
 
 ## Tips
