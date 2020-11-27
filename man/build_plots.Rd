@@ -44,7 +44,7 @@ and logical column types.}
 \item{plot_mods}{list containing additional layers to the \code{ggplot2} call
 such as theme changes, different color scales, etc.
 Each layer should be a separate list element.
-See \code{\link{ggplot2::`+.gg`}} for more details.}
+See \code{?ggplot2::`+.gg`} for more details.}
 
 \item{...}{Additional arguments to pass to the \code{geom} of the
 supplied \code{flyover} plot function.  Use this for further
