@@ -1,3 +1,8 @@
+<!-- badges: start -->
+  [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+  [![Codecov test coverage](https://codecov.io/gh/ataustin/flyover/branch/master/graph/badge.svg)](https://codecov.io/gh/ataustin/flyover?branch=master)
+  <!-- badges: end -->
+
 # flyover
 Painlessly generate high-level visual comparisons of distributions between groups or data sets.
 
