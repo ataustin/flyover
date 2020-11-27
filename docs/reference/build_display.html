@@ -147,8 +147,9 @@ Please see the documentation of this package for additional details.</p>
   <span class='va'>display_name</span>,
   <span class='va'>output_dir</span>,
   nrow <span class='op'>=</span> <span class='fl'>1</span>,
-  ncol <span class='op'>=</span> <span class='fl'>3</span>,
+  ncol <span class='op'>=</span> <span class='fl'>2</span>,
   sort_var <span class='op'>=</span> <span class='st'>"variable"</span>,
+  sort_direction <span class='op'>=</span> <span class='st'>"asc"</span>,
   self_contained <span class='op'>=</span> <span class='cn'>FALSE</span>,
   <span class='va'>...</span>
 <span class='op'>)</span></pre>
@@ -182,6 +183,12 @@ will overwrite any files stored in this directory!</p></td>
       <th>sort_var</th>
       <td><p>Character string of the cognostic to sort on.  Defaults to the
 variable name, but can be any of the cognostics of interest.</p></td>
+    </tr>
+    <tr>
+      <th>sort_direction</th>
+      <td><p>Character string specifying direction of sort;
+can be "asc" for ascending or "desc" for descending.
+Defaults to "asc".</p></td>
     </tr>
     <tr>
       <th>self_contained</th>
