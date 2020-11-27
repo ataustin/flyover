@@ -28,7 +28,9 @@ enlist_data <- function(..., names) {
   check_lengths(data_list, names)
   
   data_list[] <- lapply(data_list, tibble::as_tibble)
-  setNames(data_list, names)
+  list_out <- stats::setNames(data_list, names)
+
+  list_out
 }
 
 

@@ -6,9 +6,20 @@
 \alias{flyover-package}
 \title{flyover: simplify visual data set comparison with high-level visuals!}
 \description{
-Refactoring a data pull or refreshing data after some time has passed can result in expected (or unexpected!) changes in data contents. This package provides utilities to build simple visualizations to understand how data distributions change.
+Refactoring a data pull or refreshing data after some time has
+     passed can result in expected (or unexpected!) changes in data contents.
+     This package provides utilities to build simple visualizations to
+     understand how data distributions change.
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/ataustin/flyover}
+  \item Report bugs at \url{https://github.com/ataustin/flyover/issues}
+}
+
 }
 \author{
-\strong{Maintainer}: Adam Austin \email{ataustin@gmail.com}
+\strong{Maintainer}: Adam Austin \email{ataustin@gmail.com} [copyright holder]
 
 }

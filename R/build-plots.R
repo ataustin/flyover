@@ -34,7 +34,7 @@
 #' @param plot_mods list containing additional layers to the \code{ggplot2} call
 #'                  such as theme changes, different color scales, etc.
 #'                  Each layer should be a separate list element.
-#'                  See \code{\link{ggplot2::`+.gg`}} for more details.
+#'                  See \code{?ggplot2::`+.gg`} for more details.
 #' @param ... Additional arguments to pass to the \code{geom} of the
 #'            supplied \code{flyover} plot function.  Use this for further
 #'            modifications to the plots if needed.
@@ -63,8 +63,8 @@ build_plots <- function(stack, plot_fun, group_var = "flyover_id_",
   stack_reduced <- keep_cols_by_type(stack[, setdiff(names(stack), group_var)], keep_type)
 
   plot_vars <- names(stack_reduced)
-  plot_list <- setNames(vector(mode = "list", length = length(plot_vars)),
-                        nm = plot_vars)
+  plot_list <- stats::setNames(vector(mode = "list", length = length(plot_vars)),
+                               nm = plot_vars)
   cog_list  <- plot_list
   
   stack_reduced[, group_var] <- stack[, group_var, drop = TRUE]

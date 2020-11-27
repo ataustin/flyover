@@ -27,7 +27,7 @@ passed to \code{group_var}.
 \description{
 This is a convenience function serving as an
 intermediate step in preparing the data for visualization.
-It is a basic wrapper for \code{\link{dplyr::bind_rows}} that works
+It is a basic wrapper for \code{dplyr::bind_rows} that works
 with the data preparation flow of \code{flyover}.  The input list
 must be named to correctly identify the data sets after stacking.
 }

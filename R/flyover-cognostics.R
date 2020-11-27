@@ -73,7 +73,7 @@ split_data <- function(data, var, group_var) {
 
 
 get_pct_change_min_to_max <- function(x) {
-  if(all(is.na(x)) || length(na.omit(x)) == 1) return(NA)
+  if(all(is.na(x)) || length(stats::na.omit(x)) == 1) return(NA)
   if(all(x == 0, na.rm = TRUE)) return(0)
 
   max_val <- max(x, na.rm = TRUE)
@@ -92,7 +92,7 @@ get_pct_change_min_to_max <- function(x) {
 safe_stat <- function(stat) {
   switch(stat,
          "mean"   = function(x) if(all(is.na(x))) NA else mean(x, na.rm = TRUE),
-         "median" = function(x) if(all(is.na(x))) NA else median(x, na.rm = TRUE),
+         "median" = function(x) if(all(is.na(x))) NA else stats::median(x, na.rm = TRUE),
          "min"    = function(x) if(all(is.na(x))) NA else min(x, na.rm = TRUE),
          "max"    = function(x) if(all(is.na(x))) NA else max(x, na.rm = TRUE))
 }

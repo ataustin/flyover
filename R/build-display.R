@@ -2,7 +2,7 @@
 #'
 #' @description This function produces an interactive display for collecting,
 #' organizing, and displaying the plots generated in \code{\link{build_plots}}.
-#' The bulk of the work is done by \code{\link{trelliscopejs::trelliscope}}.
+#' The bulk of the work is done by \code{trelliscopejs::trelliscope}.
 #' Please see the documentation of this package for additional details.
 #' 
 #' @param plot_data A \code{tibble} output from \code{build_plots}.
@@ -23,7 +23,7 @@
 #'                       R markdown HTML document, but generally can be left
 #'                       as \code{FALSE} for producing an output directory
 #'                       where plots and relevant files will be stored.
-#' @param ... additional arguments passed to \code{\link{trelliscopejs::trelliscope}}.
+#' @param ... additional arguments passed to \code{trelliscopejs::trelliscope}.
 #'
 #' @export
 

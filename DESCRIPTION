@@ -13,18 +13,21 @@ Description: Refactoring a data pull or refreshing data after some time has
 License: MIT + file LICENSE
 URL: https://github.com/ataustin/flyover
 BugReports: https://github.com/ataustin/flyover/issues
-Encoding: UTF-8
-LazyData: true
-Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.1
-Suggests: 
-    testthat,
-    roxygen2,
-    devtools,
-    covr
 Imports: 
     dplyr,
     tibble,
     ggplot2,
     ggridges,
     trelliscopejs
+Suggests: 
+    testthat,
+    roxygen2,
+    devtools,
+    covr,
+    knitr
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
+VignetteBuilder:
+    knitr
