@@ -52,4 +52,4 @@ If you build a display from the console or as a batch job from an R script, you 
 
 ## Contributing and reporting problems
 
-Please see `contribute.md` (coming soon!).
+Please see [`contribute.md`](https://github.com/ataustin/flyover/blob/master/contribute.md).

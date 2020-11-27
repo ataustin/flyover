@@ -9,8 +9,9 @@ build_display(
   display_name,
   output_dir,
   nrow = 1,
-  ncol = 3,
+  ncol = 2,
   sort_var = "variable",
+  sort_direction = "asc",
   self_contained = FALSE,
   ...
 )
@@ -30,6 +31,10 @@ will overwrite any files stored in this directory!}
 
 \item{sort_var}{Character string of the cognostic to sort on.  Defaults to the
 variable name, but can be any of the cognostics of interest.}
+
+\item{sort_direction}{Character string specifying direction of sort;
+can be "asc" for ascending or "desc" for descending.
+Defaults to "asc".}
 
 \item{self_contained}{Logical; whether to render the display as a
 self-contained HTML document.  This should be set
