@@ -4,9 +4,15 @@ Version: 0.0.0.9000
 Authors@R: 
     person(given = "Adam",
            family = "Austin",
-           role = c("aut", "cre"),
+           role = c("aut", "cre", "cph"),
            email = "ataustin@gmail.com")
-Description: Refactoring a data pull or refreshing data after some time has passed can result in expected (or unexpected!) changes in data contents. This package provides utilities to build simple visualizations to understand how data distributions change.
+Description: Refactoring a data pull or refreshing data after some time has
+     passed can result in expected (or unexpected!) changes in data contents.
+     This package provides utilities to build simple visualizations to
+     understand how data distributions change.
+License: MIT + file LICENSE
+URL: https://github.com/ataustin/flyover
+BugReports: https://github.com/ataustin/flyover/issues
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
