@@ -2,7 +2,7 @@ context("stack_data")
 
 flyover_id_ <- c("first", "second", "third")
 
-input_unnamed <- list(data.frame(a = 1),
+input_unnamed <- list(data.table::data.table(a = 1),
                       tibble::tibble(a = 1, b = 2),
                       data.frame(a = 1, b = 2, c = 3))
 
@@ -18,11 +18,11 @@ test_that("data is correctly stacked", {
   target_drop_true <- tibble::tibble(flyover_id_ = flyover_id_,
                                      a = c(1, 1, 1))
   
-  expect_equal(stack_data(input_named),
-               target_drop_false)
+  expect_equivalent(stack_data(input_named),
+                    target_drop_false)
   
-  expect_equal(stack_data(input_named, drop_mismatches = TRUE),
-               target_drop_true)
+  expect_equivalent(stack_data(input_named, drop_mismatches = TRUE),
+                    target_drop_true)
 })
 
 
