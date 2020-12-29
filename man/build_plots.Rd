@@ -9,6 +9,7 @@ build_plots(
   plot_fun,
   group_var = "flyover_id_",
   keep_type = NULL,
+  ncores = 1,
   plot_mods = NULL,
   ...
 )
@@ -41,7 +42,12 @@ specifies a custom plotting function, the
 \code{"categorical"} will keep character, factor,
 and logical column types.}
 
-\item{plot_mods}{list containing additional layers to the \code{ggplot2} call
+\item{ncores}{Number of cores to use for processing plots. Plot creation can
+be parallelized by setting \code{ncores > 1}.  Note this uses
+the built-in \code{parallel} package which does not support
+Windows, so this argument is ignored for Windows systems.}
+
+\item{plot_mods}{List containing additional layers to the \code{ggplot2} call
 such as theme changes, different color scales, etc.
 Each layer should be a separate list element.
 See \code{?ggplot2::`+.gg`} for more details.}
