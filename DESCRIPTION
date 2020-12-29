@@ -24,7 +24,8 @@ Suggests:
     roxygen2,
     devtools,
     covr,
-    knitr
+    knitr,
+    data.table
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
