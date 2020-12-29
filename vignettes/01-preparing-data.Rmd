@@ -1,7 +1,11 @@
 ---
 title: Optional data preparation
 date: "`r format(Sys.time(), '%Y-%m-%d')`"
-output: html_document
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Optional data preparation}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, include = FALSE}
