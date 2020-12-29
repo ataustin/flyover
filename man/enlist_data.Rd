@@ -4,13 +4,14 @@
 \alias{enlist_data}
 \title{Create a named list from data}
 \usage{
-enlist_data(..., names)
+enlist_data(..., names = NULL)
 }
 \arguments{
 \item{...}{Comma-separated input of tabular-type data.  Any class
-that inherits from \code{data.frame} is permitted.}
+that inherits from \code{data.frame} is permitted.  Group names
+are taken from these objects, unless \code{names} is specified}
 
-\item{names}{Character vector of names corresponding to each data
+\item{names}{Optional character vector of names corresponding to each data
 data element in \code{...}}
 }
 \value{
@@ -28,6 +29,11 @@ and row names are dropped, SORRY.
 \examples{
 x <- data.frame(a = 1:3, b = letters[1:3])
 y <- data.frame(a = 4:6, b = letters[4:6])
+
+# groups will be named "x" and "y"
+enlist_data(x, y)
+
+# groups will be named "old" and "new"
 enlist_data(x, y, names = c("old", "new"))
 
 }

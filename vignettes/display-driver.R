@@ -29,7 +29,7 @@ new <- data.frame(norm  = rnorm(n = 100, mean = 3),
                   fruit = sample(c("apple", "banana", "pear"), size = 100, replace = TRUE, prob = c(3, 2, 1)))
 
 
-data_list  <- enlist_data(old, new, names = c("old data", "new data"))
+data_list  <- enlist_data(old, new)
 data_stack <- stack_data(data_list, group_var = "source")
 
 

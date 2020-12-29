@@ -43,10 +43,10 @@ new <- data.frame(num1 = rnorm(5),
                   cat1 = letters[1:5])
 ```
 
-The first step is to create a named list of the data.  The names will be used as the levels of a grouping variable to identify observations in later plots, so be sure to make them meaningful.
+The first step is to create a named list of the data.  The names will be used as the levels of a grouping variable to identify observations in later plots, so you want them to be meaningful.  By default the names are taken to be the object names you pass, but you can supply a character vector of names to make them more descriptive.
 
 ```{r enlist-data}
-data_list <- enlist_data(old, new, names = c("old data", "new data"))
+data_list <- enlist_data(old, new, names = c("my old data", "my new data"))
 
 str(data_list)
 ```
@@ -78,6 +78,6 @@ Notice that these functions -- indeed, all the functions in this package -- are 
 ```
 data_stack <-
   old %>%
-  enlist_data(new, names = c("old", "new")) %>%
+  enlist_data(new) %>%
   stack_data()
 ```
