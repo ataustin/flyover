@@ -117,11 +117,11 @@
 <div id="data-for-this-example" class="section level2">
 <h2 class="hasAnchor">
 <a href="#data-for-this-example" class="anchor"></a>Data for this example</h2>
-<p>We simulate a data set with numeric and categorical variables from two different sources (called “old data” and “new data”). Each source has a slightly different data-generating process. Note the <code>source</code> column where these values are stored. We wish to understand the distributional differences of the other variables between these sources.</p>
+<p>We simulate a data set with numeric and categorical variables from two different sources (called “old” and “new”). Each source has a slightly different data-generating process. Note the <code>source</code> column where these values are stored. We wish to understand the distributional differences of the other variables between these sources.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">my_data</span><span class="op">)</span></pre></div>
 <pre><code>## tibble [200 × 10] (S3: tbl_df/tbl/data.frame)
-##  $ source: chr [1:200] "old data" "old data" "old data" "old data" ...
+##  $ source: chr [1:200] "old" "old" "old" "old" ...
 ##  $ norm  : num [1:200] 1.586 1.709 0.891 0.547 1.606 ...
 ##  $ exp   : num [1:200] 0.1772 0.0858 0.3273 0.5311 2.5615 ...
 ##  $ chisq : num [1:200] 4.53 6.54 4.92 3.55 2.71 ...
@@ -272,7 +272,7 @@
 <p>Notice that these functions – indeed, all the functions in this package – are data-first, meaning they are pipe-friendly. Thus you could in theory write a pipeline like this:</p>
 <pre><code>my_histograms &lt;-
   old %&gt;%
-  enlist_data(new, names = c("old data", "new data")) %&gt;%
+  enlist_data(new) %&gt;%
   stack_data() %&gt;%
   build_plots(flyover_histogram)</code></pre>
 </div>
