@@ -158,6 +158,18 @@ str(my_bars$cogs[[1]])
 The next article will clarify how cognostics are used in trelliscope displays.
 
 
+## Plotting in parallel
+
+If you have an unruly number of variables to plot, you can save time by creating them in parallel.  On unix-like machines, you can supply an integer to the `ncores` argument to render plots across multiple cores.  This uses the `parallel` package that ships with R, which means that unfortunately this feature is not supported on Windows (unless you are using Windows Subsystem for Linux).
+
+For an introduction to parallel computing, see [this chapter](https://bookdown.org/rdpeng/rprogdatascience/parallel-computation.html) in Roger Peng's book.
+
+```{r eval = FALSE}
+my_histograms <- build_plots(my_data, flyover_histogram, group_var = "source",
+                             ncores = 4)
+```
+
+
 ## Using a pipe
 
 Notice that these functions -- indeed, all the functions in this package -- are data-first, meaning they are pipe-friendly.  Thus you could in theory write a pipeline like this:

@@ -93,7 +93,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Creating plots</h1>
             
-            <h4 class="date">2020-11-27</h4>
+            <h4 class="date">2020-12-29</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ataustin/flyover/blob/master/vignettes/02-building-plots.Rmd"><code>vignettes/02-building-plots.Rmd</code></a></small>
       <div class="hidden name"><code>02-building-plots.Rmd</code></div>
@@ -256,6 +256,15 @@
 ##  $ pct_change_missing: num 0
 ##  $ n_levels          : int 4</code></pre>
 <p>The next article will clarify how cognostics are used in trelliscope displays.</p>
+</div>
+<div id="plotting-in-parallel" class="section level2">
+<h2 class="hasAnchor">
+<a href="#plotting-in-parallel" class="anchor"></a>Plotting in parallel</h2>
+<p>If you have an unruly number of variables to plot, you can save time by creating them in parallel. On unix-like machines, you can supply an integer to the <code>ncores</code> argument to render plots across multiple cores. This uses the <code>parallel</code> package that ships with R, which means that unfortunately this feature is not supported on Windows (unless you are using Windows Subsystem for Linux).</p>
+<p>For an introduction to parallel computing, see <a href="https://bookdown.org/rdpeng/rprogdatascience/parallel-computation.html">this chapter</a> in Roger Peng’s book.</p>
+<div class="sourceCode" id="cb14"><pre class="downlit">
+<span class="va">my_histograms</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/build_plots.html">build_plots</a></span><span class="op">(</span><span class="va">my_data</span>, <span class="va">flyover_histogram</span>, group_var <span class="op">=</span> <span class="st">"source"</span>,
+                             ncores <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></pre></div>
 </div>
 <div id="using-a-pipe" class="section level2">
 <h2 class="hasAnchor">
