@@ -31,7 +31,11 @@
 #'                  \code{"numeric"} or \code{"categorical"}.  Passing
 #'                  \code{"categorical"} will keep character, factor,
 #'                  and logical column types.
-#' @param plot_mods list containing additional layers to the \code{ggplot2} call
+#' @param ncores Number of cores to use for processing plots. Plot creation can
+#'               be parallelized by setting \code{ncores > 1}.  Note this uses
+#'               the built-in \code{parallel} package which does not support
+#'               Windows, so this argument is ignored for Windows systems.
+#' @param plot_mods List containing additional layers to the \code{ggplot2} call
 #'                  such as theme changes, different color scales, etc.
 #'                  Each layer should be a separate list element.
 #'                  See \code{?ggplot2::`+.gg`} for more details.
@@ -48,7 +52,7 @@
 
 
 build_plots <- function(stack, plot_fun, group_var = "flyover_id_",
-                        keep_type = NULL, plot_mods = NULL, ...) {
+                        keep_type = NULL, ncores = 1, plot_mods = NULL, ...) {
   plot_fun_parse_tree <- as.character(substitute(plot_fun))
   plot_fun_call_char  <- plot_fun_parse_tree[length(plot_fun_parse_tree)]
   
@@ -56,6 +60,12 @@ build_plots <- function(stack, plot_fun, group_var = "flyover_id_",
   plot_is_flyover  <- plot_fun_call_char %in% names(plot_type_lookup)
   
   check_build_plot_args(stack, group_var, keep_type, plot_is_flyover)
+  if(ncores > 1) {
+    if(.Platform$OS.type == "windows") {
+      warning("Parallelism not supported on Windows; setting ncores = 1.")
+      ncores <- 1
+    }
+  }
   
   stack <- tibble::as_tibble(stack)
   
@@ -63,18 +73,19 @@ build_plots <- function(stack, plot_fun, group_var = "flyover_id_",
   stack_reduced <- keep_cols_by_type(stack[, setdiff(names(stack), group_var)], keep_type)
 
   plot_vars <- names(stack_reduced)
-  plot_list <- stats::setNames(vector(mode = "list", length = length(plot_vars)),
-                               nm = plot_vars)
-  cog_list  <- plot_list
-  
   stack_reduced[, group_var] <- stack[, group_var, drop = TRUE]
   
-  for(var in plot_vars) {
-    plot_data <- stack_reduced[, c(var, group_var)] # reduce size of gg object by shrinking data that gets stored
-    plot_list[[var]] <- plot_fun(plot_data, var, group_var, ...) + plot_mods
-    cog_list[[var]] <- build_cognostics(keep_type, plot_data, var, group_var)
-  }
-  
+  plot_list <- parallel::mclapply(plot_vars, function(var) {
+                      plot_data <- stack_reduced[, c(var, group_var)]  # reduce data size in gg object
+                      plot_fun(plot_data, var, group_var, ...) + plot_mods},
+                  mc.cores = ncores)
+  cog_list  <- parallel::mclapply(plot_vars, function(var) {
+                      build_cognostics(keep_type, stack_reduced, var, group_var)},
+                  mc.cores = ncores)
+
+  names(plot_list) <- plot_vars
+  names(cog_list)  <- plot_vars 
+
   output <- tibble::tibble(variable = plot_vars,
                            plot     = plot_list,
                            cogs     = cog_list)
