@@ -1,4 +1,8 @@
 template:
+  twitter:
+    creator: "@just_add_data"
+    site: "@just_add_data"
+    card: summary_large_image
   params:
     bootswatch: flatly
 reference:
