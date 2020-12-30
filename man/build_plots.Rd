@@ -38,8 +38,8 @@ By default the column type is determined by the
 is passed, this argument is ignored. However, if the user
 specifies a custom plotting function, the
 \code{keep_type} argument must be set to one of
-\code{"numeric"} or \code{"categorical"}.  Passing
-\code{"categorical"} will keep character, factor,
+\code{"numeric"}, \code{"categorical"}, or \code{"both"}.
+Passing \code{"categorical"} will keep character, factor,
 and logical column types.}
 
 \item{ncores}{Number of cores to use for processing plots. Plot creation can
