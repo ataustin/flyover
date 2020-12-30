@@ -18,15 +18,19 @@ This package is for you if:
 `flyover` provides utilities to quickly generate and organize plots of distributions split by a grouping variable.
 
 
-## How it works
-This package is largely powered by [ggplot2](https://ggplot2.tidyverse.org/) for building plots, and the awesome [trelliscopejs](https://hafen.github.io/trelliscopejs/) by [Ryan Hafen](https://ryanhafen.com/) for providing a viewer to navigate them.
+## Documentation
 
-For detailed instructions, see the [documentation](https://ataustin.github.io/flyover/).
+For detailed instructions, see the [package website](https://ataustin.github.io/flyover/).
+
+This package is largely powered by [ggplot2](https://ggplot2.tidyverse.org/) for building plots, and the awesome [trelliscopejs](https://hafen.github.io/trelliscopejs/) by [Ryan Hafen](https://ryanhafen.com/) for providing a viewer to navigate them.
 
 
 ## Install
-`devtools::install_github("ataustin/flyover")`
 
+```
+devtools::install_github("ataustin/flyover")
+library(flyover)
+```
 Note that the dependencies are large (especially trelliscopejs) and may take a long time to install.
 
 

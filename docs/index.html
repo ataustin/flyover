@@ -69,7 +69,10 @@
       <a href="articles/04-custom-plots.html">Using custom plots</a>
     </li>
     <li>
-      <a href="articles/05-gallery.html">Gallery</a>
+      <a href="articles/05-monitoring-data.html">Monitoring data drift</a>
+    </li>
+    <li>
+      <a href="articles/06-gallery.html">Gallery</a>
     </li>
   </ul>
 </li>
@@ -111,16 +114,17 @@
 </ul>
 <p><code>flyover</code> provides utilities to quickly generate and organize plots of distributions split by a grouping variable.</p>
 </div>
-<div id="how-it-works" class="section level2">
+<div id="documentation" class="section level2">
 <h2 class="hasAnchor">
-<a href="#how-it-works" class="anchor"></a>How it works</h2>
+<a href="#documentation" class="anchor"></a>Documentation</h2>
+<p>For detailed instructions, see the <a href="https://ataustin.github.io/flyover/">package website</a>.</p>
 <p>This package is largely powered by <a href="https://ggplot2.tidyverse.org/">ggplot2</a> for building plots, and the awesome <a href="https://hafen.github.io/trelliscopejs/">trelliscopejs</a> by <a href="https://ryanhafen.com/">Ryan Hafen</a> for providing a viewer to navigate them.</p>
-<p>For detailed instructions, see the <a href="https://ataustin.github.io/flyover/">documentation</a>.</p>
 </div>
 <div id="install" class="section level2">
 <h2 class="hasAnchor">
 <a href="#install" class="anchor"></a>Install</h2>
-<p><code><a href="https://devtools.r-lib.org//reference/remote-reexports.html">devtools::install_github("ataustin/flyover")</a></code></p>
+<pre><code><a href="https://devtools.r-lib.org//reference/remote-reexports.html">devtools::install_github("ataustin/flyover")
+library(flyover)</a></code></pre>
 <p>Note that the dependencies are large (especially trelliscopejs) and may take a long time to install.</p>
 </div>
 <div id="quickstart" class="section level2">

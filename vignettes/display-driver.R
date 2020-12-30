@@ -1,6 +1,7 @@
 library(rprojroot)
 library(flyover)
 library(ggplot2)
+library(dplyr)
 
 root_dir <- find_root(has_dir(".git"))
 vignette_dir <- file.path(root_dir, "docs", "articles")
@@ -62,6 +63,35 @@ build_display(ecdf,
               output_dir   = file.path(vignette_dir, "display-ecdf"))
 
 
+# monitoring-data.Rmd
+
+storms <-
+  dplyr::storms %>%
+  filter(year > 2006) %>%
+  select(year, ts_diameter, hu_diameter, lat, long, status, category, wind, pressure) %>%
+  mutate(status = gsub(" ", "\n", status))
+
+ridges <- build_plots(storms, flyover_density_ridges, group_var = "year")
+build_display(ridges,
+              display_name = "ridges",
+              output_dir   = file.path(vignette_dir, "display-storm-ridges"))
+
+bar_fill <- build_plots(storms, flyover_bar_fill, group_var = "year")
+build_display(bar_fill,
+              display_name = "bar fill",
+              output_dir   = file.path(vignette_dir, "display-storm-bar-fill"))
+
+na_count <- build_plots(storms, flyover_na_count, group_var = "year")
+build_display(na_count,
+              display_name = "NA count",
+              output_dir   = file.path(vignette_dir, "display-storm-na-count"))
+
+na_percent <- build_plots(storms, flyover_na_percent, group_var = "year")
+build_display(na_percent,
+              display_name = "NA percent",
+              output_dir   = file.path(vignette_dir, "display-storm-na-percent"))
+
+
 # gallery.Rmd
 
 flyover_lookup <- flyover:::get_flyover_type_lookup()
@@ -80,7 +110,6 @@ fun_name_to_dir_name <- function(fun_name) {
 
 for(fun_name in flyover_fun_names) {
   this_plot <- build_plots(data_stack,
-                          #  flyover_funs[[fun_name]],
                            get(fun_name),
                            group_var = "source",
                            keep_type = flyover_lookup[fun_name])

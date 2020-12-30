@@ -64,9 +64,9 @@ flyover_density_ridges <- function(tbl, var, group_var, ...) {
 #' @rdname flyover_histogram
 #' @export
 flyover_bar_dodge <- function(tbl, var, group_var, ...) {
-  ggplot(tbl, aes_string(y = var, fill = group_var)) +
+  ggplot(tbl, aes_string(y = group_var, fill = var)) +
     geom_bar(position = position_dodge(), ...) +
-    theme_minimal(base_size = 14) + 
+    theme_minimal(base_size = 12) + 
     theme(legend.position = "top")
 }
 
@@ -74,9 +74,9 @@ flyover_bar_dodge <- function(tbl, var, group_var, ...) {
 #' @rdname flyover_histogram
 #' @export
 flyover_bar_fill <- function(tbl, var, group_var, ...) {
-  ggplot(tbl, aes_string(y = var, fill = group_var)) +
+  ggplot(tbl, aes_string(y = group_var, fill = var)) +
     geom_bar(position = position_fill(reverse = TRUE), ...) +
-    theme_minimal(base_size = 14) +
+    theme_minimal(base_size = 12) +
     theme(legend.position = "top") +
     labs(x = "proportion")
 }
