@@ -62,7 +62,7 @@ str(my_data)
 
 ## Structure of `flyover` plotting functions
 
-The built-in plotting functions that ship with this package are very simple wrappers for `ggplot2` plots.  For example, this is the body of the function `flyover_histogram`:
+The built-in plotting functions that ship with this package are little more than wrappers for `ggplot2` plots.  For example, this is the body of the function `flyover_histogram`:
 
 ```{r fun-body, echo = FALSE}
 flyover_histogram
@@ -106,3 +106,13 @@ build_display(my_ecdf,
 ```
 
 <iframe src="display-ecdf/" height=500 width=850 scrolling="no" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen="true"></iframe>
+
+
+## Advanced customizations
+
+When you write a custom plotting function, you are free to transform the data however you like prior to plotting.  This is the strategy employed by, _e.g._, `flyover_na_percent` in order to calculate the
+percent of missing values.  Note that you will still be required to operate on a single column at a time to remain compatible with the framework of the package.
+
+```{r fun-body-advanced, echo = FALSE}
+flyover_na_percent
+```
