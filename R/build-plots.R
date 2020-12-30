@@ -28,8 +28,8 @@
 #'                  is passed, this argument is ignored. However, if the user
 #'                  specifies a custom plotting function, the
 #'                  \code{keep_type} argument must be set to one of
-#'                  \code{"numeric"} or \code{"categorical"}.  Passing
-#'                  \code{"categorical"} will keep character, factor,
+#'                  \code{"numeric"}, \code{"categorical"}, or \code{"both"}.
+#'                  Passing \code{"categorical"} will keep character, factor,
 #'                  and logical column types.
 #' @param ncores Number of cores to use for processing plots. Plot creation can
 #'               be parallelized by setting \code{ncores > 1}.  Note this uses
@@ -99,7 +99,9 @@ get_flyover_type_lookup <- function() {
     flyover_binline_ridges = "numeric",
     flyover_density_ridges = "numeric",
     flyover_bar_dodge      = "categorical",
-    flyover_bar_fill       = "categorical")
+    flyover_bar_fill       = "categorical",
+    flyover_na_percent     = "both",
+    flyover_na_count       = "both")
 }
 
 

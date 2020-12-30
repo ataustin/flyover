@@ -81,7 +81,9 @@ lookup_df <- data.frame(function_name = names(lookup),
 knitr::kable(lookup_df)
 ```
 
-Plotting functions ending with `_ridges` are derived from the package `ggridges` ([documentation](https://cran.r-project.org/web/packages/ggridges/vignettes/introduction.html)) and are well suited to comparing numeric distributions through time, _e.g._ for examining data drift across data pulls occurring on regular intervals.
+Plotting functions ending with `_ridges` are derived from the package `ggridges` ([documentation](https://cran.r-project.org/web/packages/ggridges/vignettes/introduction.html)).  These are well suited to comparing numeric distributions through time, _e.g._ for examining data drift across data pulls occurring on regular intervals.
+
+The functions titled `flyover_na_*` are for general data quality monitoring and can operate on columns of _both_ numeric and categorical types.  These are also best suited for monitoring data through time.
 
 
 ## Building plots

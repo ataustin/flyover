@@ -80,3 +80,33 @@ flyover_bar_fill <- function(tbl, var, group_var, ...) {
     theme(legend.position = "top") +
     labs(x = "proportion")
 }
+
+
+#' @rdname flyover_histogram
+#' @export
+flyover_na_percent <- function(tbl, var, group_var, ...) {
+  tbl_grp <- dplyr::group_by_at(tbl, group_var)
+  summary <- dplyr::summarize_at(tbl_grp, vars(var), flyover:::percent_na)
+
+  ggplot(summary, aes_string(x = group_var, y = var, group = 1)) +
+    geom_point(stat = "summary", fun = sum) +
+    geom_line(stat = "summary", fun = sum, ...) +
+    theme_minimal(base_size = 14) +
+    scale_y_continuous(limits = c(0, 100)) +
+    labs(x = group_var, y = "Percent NA")
+}
+
+
+#' @rdname flyover_histogram
+#' @export
+flyover_na_count <- function(tbl, var, group_var, ...) {
+  tbl_grp <- dplyr::group_by_at(tbl, group_var)
+  summary <- dplyr::summarize_at(tbl_grp, vars(var), flyover:::count_na)
+
+  ggplot(summary, aes_string(x = group_var, y = var, group = 1)) +
+    geom_point(stat = "summary", fun = sum) +
+    geom_line(stat = "summary", fun = sum) +
+    theme_minimal(base_size = 14) +
+    ylim(0, max(summary[[var]])) +
+    labs(x = group_var, y = "Count of NA")
+}

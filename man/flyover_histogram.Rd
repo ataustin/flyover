@@ -7,6 +7,8 @@
 \alias{flyover_density_ridges}
 \alias{flyover_bar_dodge}
 \alias{flyover_bar_fill}
+\alias{flyover_na_percent}
+\alias{flyover_na_count}
 \title{Minimal functions for basic plotting of groupwise comparisons.}
 \usage{
 flyover_histogram(tbl, var, group_var, ...)
@@ -20,6 +22,10 @@ flyover_density_ridges(tbl, var, group_var, ...)
 flyover_bar_dodge(tbl, var, group_var, ...)
 
 flyover_bar_fill(tbl, var, group_var, ...)
+
+flyover_na_percent(tbl, var, group_var, ...)
+
+flyover_na_count(tbl, var, group_var, ...)
 }
 \arguments{
 \item{tbl}{A \code{tibble} containing the variable of interest and the grouping variable.}

@@ -1,9 +1,13 @@
 keep_cols_by_type <- function(tbl, type) {
-  if(!type %in% c("numeric", "categorical")) {
-    stop("In keep_cols_by_type, type must be either 'numeric' or 'categorical'.",
-         call. = FALSE)
+  allowed_col_types <- unique(flyover:::get_flyover_type_lookup())
+  if(!type %in% allowed_col_types) {
+    types <- paste(paste0("'", allowed_col_types, "'"), collapse = ", ")
+    err <- paste("In keep_cols_by_type, type must be one of", types)
+    stop(err, call. = FALSE)
   }
   
+  if(type == "both") return(tbl)
+
   keep_fun <- switch(type,
                      numeric = is_flyover_numeric,
                      categorical = is_flyover_categorical)

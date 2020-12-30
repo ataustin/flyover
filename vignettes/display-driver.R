@@ -28,6 +28,13 @@ new <- data.frame(norm  = rnorm(n = 100, mean = 3),
                   tf    = sample(c(TRUE, FALSE), size = 100, replace = TRUE, prob = c(1, 3)),
                   fruit = sample(c("apple", "banana", "pear"), size = 100, replace = TRUE, prob = c(3, 2, 1)))
 
+old$norm[sample(1:100, 5)] <- NA
+new$norm[sample(1:100, 10)] <- NA
+
+old$chisq[sample(1:100, 5)] <- NA
+
+old$fruit[sample(1:100, 30)] <- NA
+new$fruit[sample(1:100, 20)] <- NA
 
 data_list  <- enlist_data(old, new)
 data_stack <- stack_data(data_list, group_var = "source")

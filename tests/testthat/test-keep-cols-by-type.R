@@ -22,6 +22,9 @@ test_that("correct columns are kept", {
   
   expect_identical(keep_cols_by_type(df, "categorical"),
                    categorical_target)
+
+  expect_identical(keep_cols_by_type(df, "both"),
+                   df)
 })
 
 
@@ -32,6 +35,10 @@ test_that("errors are handled", {
   
   expect_error(keep_cols_by_type(no_categories, "categorical"),
                regex = "type categorical")
+
   expect_error(keep_cols_by_type(no_numerics, "numeric"),
                regex = "type numeric")
+
+  expect_error(keep_cols_by_type(df, "nonsense"),
+               regex = "type must be one of")
 })
