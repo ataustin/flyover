@@ -1,0 +1,95 @@
+---
+title: Monitoring data drift
+date: "`r format(Sys.time(), '%Y-%m-%d')`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Monitoring data drift}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+library(flyover)
+library(dplyr)
+```
+
+
+## What this article covers
+
+This article illustrates how the `flyover` package can be useful to monitor data drift over time.  In situations where you pull data on regular intervals, you may be interested in how that data is changing from one pull to another.  A large enough shift in distributions may mean you need to retrain models or take other actions.  Missing values may also wreak havoc if upstream data processes change without warning.
+
+
+## Data for this example
+
+We will examine a subset of major storm data that is available from the `dplyr` package.  This will be illustrative only.
+
+```{r view-data}
+library(dplyr)
+my_data <-
+  dplyr::storms %>%
+  filter(year > 2006) %>%
+  select(year, ts_diameter, hu_diameter, lat, long, status, category, wind, pressure)
+
+str(my_data)
+```
+
+
+When you create data to monitor drift, I recommend using a group column that is formatted akin to ISO-8601 standards, e.g. `YYYY-MM-DD`, and stacking the data sets in order of date.  This will ensure your output is easy to read.
+
+
+## Distribution drift
+
+### Numeric distributions
+
+I recommend using `flyover_binline_ridges` or `flyover_density_ridges` to monitor drift of numeric variables over time.
+
+```{r density-ridges, eval = FALSE}
+ridges <- build_plots(my_data, flyover_density_ridges, group_var = "year")
+build_display(ridges,
+              display_name = "ridges",
+              output_dir   = "display-storm-ridges")
+```
+
+<iframe src="display-storm-ridges/" height=500 width=850 scrolling="no" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen="true"></iframe>
+
+
+### Categorical distributions
+
+I recommend using `flyover_bar_fill` to monitor drift of categorical vairables over time.  This will work best if the number of categories is small.
+
+```{r bar-fill, eval = FALSE}
+bar_fill <- build_plots(my_data, flyover_bar_fill, group_var = "year")
+build_display(bar_fill,
+              display_name = "bar fill",
+              output_dir   = "display-storm-bar-fill")
+```
+
+<iframe src="display-storm-bar-fill/" height=500 width=850 scrolling="no" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen="true"></iframe>
+
+
+## Data quality
+
+You can also monitor missing values, either as raw counts or as a percent of total observations for the group.
+
+### Missing value counts
+
+```{r missing-count, eval = FALSE}
+na_count <- build_plots(my_data, flyover_na_count, group_var = "year")
+build_display(na_count,
+              display_name = "NA count",
+              output_dir   = "display-storm-na-count")
+```
+
+<iframe src="display-storm-na-count/" height=500 width=850 scrolling="no" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen="true"></iframe>
+
+
+### Missing value percentages
+
+```{r missing-percent, eval = FALSE}
+na_percent <- build_plots(my_data, flyover_na_percent, group_var = "year")
+build_display(na_percent,
+              display_name = "NA percent",
+              output_dir   = "display-storm-na-percent")
+```
+
+<iframe src="display-storm-na-percent/" height=500 width=850 scrolling="no" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen="true"></iframe>

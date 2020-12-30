@@ -85,6 +85,8 @@ Plotting functions ending with `_ridges` are derived from the package `ggridges`
 
 The functions titled `flyover_na_*` are for general data quality monitoring and can operate on columns of _both_ numeric and categorical types.  These are also best suited for monitoring data through time.
 
+See examples of monitoring data drift in [this article](https://ataustin.github.io/flyover/articles/05-monitoring-data.html).
+
 
 ## Building plots
 
