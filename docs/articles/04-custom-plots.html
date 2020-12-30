@@ -140,7 +140,7 @@
 ##     ggplot(tbl, aes_string(x = var, fill = group_var)) + geom_histogram(position = "identity", 
 ##         alpha = 0.5, ...) + theme_minimal(base_size = 14)
 ## }
-## &lt;bytecode: 0x559068a8c008&gt;
+## &lt;bytecode: 0x561711313018&gt;
 ## &lt;environment: namespace:flyover&gt;</code></pre>
 <p>Important features to note are the following:</p>
 <ul>
@@ -181,15 +181,14 @@
 <p>When you write a custom plotting function, you are free to transform the data however you like prior to plotting. This is the strategy employed by, <em>e.g.</em>, <code>flyover_na_percent</code> in order to calculate the percent of missing values. Note that you will still be required to operate on a single column at a time to remain compatible with the framework of the package.</p>
 <pre><code>## function (tbl, var, group_var, ...) 
 ## {
-##     percent_na &lt;- function(x) round(100 * mean(is.na(x)), 1)
 ##     tbl_grp &lt;- dplyr::group_by_at(tbl, group_var)
-##     summary &lt;- dplyr::summarize_at(tbl_grp, vars(var), percent_na)
+##     summary &lt;- dplyr::summarize_at(tbl_grp, vars(var), flyover:::percent_na)
 ##     ggplot(summary, aes_string(x = group_var, y = var, group = 1)) + 
 ##         geom_point(stat = "summary", fun = sum) + geom_line(stat = "summary", 
 ##         fun = sum, ...) + theme_minimal(base_size = 14) + scale_y_continuous(limits = c(0, 
 ##         100)) + labs(x = group_var, y = "Percent NA")
 ## }
-## &lt;bytecode: 0x559068d52b28&gt;
+## &lt;bytecode: 0x5617115df888&gt;
 ## &lt;environment: namespace:flyover&gt;</code></pre>
 </div>
   </div>

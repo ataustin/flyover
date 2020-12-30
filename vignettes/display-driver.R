@@ -80,7 +80,8 @@ fun_name_to_dir_name <- function(fun_name) {
 
 for(fun_name in flyover_fun_names) {
   this_plot <- build_plots(data_stack,
-                           flyover_funs[[fun_name]],
+                          #  flyover_funs[[fun_name]],
+                           get(fun_name),
                            group_var = "source",
                            keep_type = flyover_lookup[fun_name])
   
