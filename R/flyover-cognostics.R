@@ -1,7 +1,8 @@
 build_cognostics <- function(keep_type, plot_data, var, group_var) {
   cog_function <- switch(keep_type,
                          numeric = build_numeric_cognostics,
-                         categorical = build_categorical_cognostics)
+                         categorical = build_categorical_cognostics,
+                         both = build_numeric_cognostics)
 
   data_split <- split_data(plot_data, var, group_var)
   cog_data   <- cog_function(data_split)

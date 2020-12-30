@@ -115,9 +115,9 @@ test_that("categorical cognostics are correct", {
 })
 
 
-test_that("build cognostics produces desired output", {
-  vars <- c("num2", "cat1")
-  type <- c("numeric", "categorical")
+test_that("build_cognostics produces desired output", {
+  vars <- c("num2", "cat1", "num2")
+  type <- c("numeric", "categorical", "both")
 
   for(i in 1:length(vars)) {
     expect_is(build_cognostics(type[i], stack, vars[i], "grp"),
