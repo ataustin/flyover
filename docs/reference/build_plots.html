@@ -158,6 +158,7 @@ type data is ignored.</p>
   <span class='va'>plot_fun</span>,
   group_var <span class='op'>=</span> <span class='st'>"flyover_id_"</span>,
   keep_type <span class='op'>=</span> <span class='cn'>NULL</span>,
+  ncores <span class='op'>=</span> <span class='fl'>1</span>,
   plot_mods <span class='op'>=</span> <span class='cn'>NULL</span>,
   <span class='va'>...</span>
 <span class='op'>)</span></pre>
@@ -196,13 +197,20 @@ By default the column type is determined by the
 is passed, this argument is ignored. However, if the user
 specifies a custom plotting function, the
 <code>keep_type</code> argument must be set to one of
-<code>"numeric"</code> or <code>"categorical"</code>.  Passing
-<code>"categorical"</code> will keep character, factor,
+<code>"numeric"</code>, <code>"categorical"</code>, or <code>"both"</code>.
+Passing <code>"categorical"</code> will keep character, factor,
 and logical column types.</p></td>
     </tr>
     <tr>
+      <th>ncores</th>
+      <td><p>Number of cores to use for processing plots. Plot creation can
+be parallelized by setting <code>ncores &gt; 1</code>.  Note this uses
+the built-in <code>parallel</code> package which does not support
+Windows, so this argument is ignored for Windows systems.</p></td>
+    </tr>
+    <tr>
       <th>plot_mods</th>
-      <td><p>list containing additional layers to the <code>ggplot2</code> call
+      <td><p>List containing additional layers to the <code>ggplot2</code> call
 such as theme changes, different color scales, etc.
 Each layer should be a separate list element.
 See <code><a href='https://ggplot2.tidyverse.org/reference/gg-add.html'>?ggplot2::`+.gg`</a></code> for more details.</p></td>

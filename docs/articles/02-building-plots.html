@@ -93,7 +93,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Creating plots</h1>
             
-            <h4 class="date">2020-12-29</h4>
+            <h4 class="date">2020-12-30</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ataustin/flyover/blob/master/vignettes/02-building-plots.Rmd"><code>vignettes/02-building-plots.Rmd</code></a></small>
       <div class="hidden name"><code>02-building-plots.Rmd</code></div>
@@ -171,9 +171,18 @@
 <td align="left">flyover_bar_fill</td>
 <td align="left">categorical</td>
 </tr>
+<tr class="odd">
+<td align="left">flyover_na_percent</td>
+<td align="left">both</td>
+</tr>
+<tr class="even">
+<td align="left">flyover_na_count</td>
+<td align="left">both</td>
+</tr>
 </tbody>
 </table>
-<p>Plotting functions ending with <code>_ridges</code> are derived from the package <code>ggridges</code> (<a href="https://cran.r-project.org/web/packages/ggridges/vignettes/introduction.html">documentation</a>) and are well suited to comparing numeric distributions through time, <em>e.g.</em> for examining data drift across data pulls occurring on regular intervals.</p>
+<p>Plotting functions ending with <code>_ridges</code> are derived from the package <code>ggridges</code> (<a href="https://cran.r-project.org/web/packages/ggridges/vignettes/introduction.html">documentation</a>). These are well suited to comparing numeric distributions through time, <em>e.g.</em> for examining data drift across data pulls occurring on regular intervals.</p>
+<p>The functions titled <code>flyover_na_*</code> are for general data quality monitoring and can operate on columns of <em>both</em> numeric and categorical types. These are also best suited for monitoring data through time.</p>
 </div>
 <div id="building-plots" class="section level2">
 <h2 class="hasAnchor">

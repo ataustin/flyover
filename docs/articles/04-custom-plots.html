@@ -93,7 +93,7 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Using custom plots</h1>
             
-            <h4 class="date">2020-12-29</h4>
+            <h4 class="date">2020-12-30</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ataustin/flyover/blob/master/vignettes/04-custom-plots.Rmd"><code>vignettes/04-custom-plots.Rmd</code></a></small>
       <div class="hidden name"><code>04-custom-plots.Rmd</code></div>
@@ -134,13 +134,13 @@
 <div id="structure-of-flyover-plotting-functions" class="section level2">
 <h2 class="hasAnchor">
 <a href="#structure-of-flyover-plotting-functions" class="anchor"></a>Structure of <code>flyover</code> plotting functions</h2>
-<p>The built-in plotting functions that ship with this package are very simple wrappers for <code>ggplot2</code> plots. For example, this is the body of the function <code>flyover_histogram</code>:</p>
+<p>The built-in plotting functions that ship with this package are little more than wrappers for <code>ggplot2</code> plots. For example, this is the body of the function <code>flyover_histogram</code>:</p>
 <pre><code>## function (tbl, var, group_var, ...) 
 ## {
 ##     ggplot(tbl, aes_string(x = var, fill = group_var)) + geom_histogram(position = "identity", 
 ##         alpha = 0.5, ...) + theme_minimal(base_size = 14)
 ## }
-## &lt;bytecode: 0x556c25ed20b8&gt;
+## &lt;bytecode: 0x559068a8c008&gt;
 ## &lt;environment: namespace:flyover&gt;</code></pre>
 <p>Important features to note are the following:</p>
 <ul>
@@ -174,6 +174,23 @@
               output_dir   <span class="op">=</span> <span class="st">"display-ecdf"</span><span class="op">)</span></pre></div>
 <iframe src="display-ecdf/" height="500" width="850" scrolling="no" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen="true">
 </iframe>
+</div>
+<div id="advanced-customizations" class="section level2">
+<h2 class="hasAnchor">
+<a href="#advanced-customizations" class="anchor"></a>Advanced customizations</h2>
+<p>When you write a custom plotting function, you are free to transform the data however you like prior to plotting. This is the strategy employed by, <em>e.g.</em>, <code>flyover_na_percent</code> in order to calculate the percent of missing values. Note that you will still be required to operate on a single column at a time to remain compatible with the framework of the package.</p>
+<pre><code>## function (tbl, var, group_var, ...) 
+## {
+##     percent_na &lt;- function(x) round(100 * mean(is.na(x)), 1)
+##     tbl_grp &lt;- dplyr::group_by_at(tbl, group_var)
+##     summary &lt;- dplyr::summarize_at(tbl_grp, vars(var), percent_na)
+##     ggplot(summary, aes_string(x = group_var, y = var, group = 1)) + 
+##         geom_point(stat = "summary", fun = sum) + geom_line(stat = "summary", 
+##         fun = sum, ...) + theme_minimal(base_size = 14) + scale_y_continuous(limits = c(0, 
+##         100)) + labs(x = group_var, y = "Percent NA")
+## }
+## &lt;bytecode: 0x559068d52b28&gt;
+## &lt;environment: namespace:flyover&gt;</code></pre>
 </div>
   </div>
 
