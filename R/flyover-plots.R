@@ -85,10 +85,8 @@ flyover_bar_fill <- function(tbl, var, group_var, ...) {
 #' @rdname flyover_histogram
 #' @export
 flyover_na_percent <- function(tbl, var, group_var, ...) {
-  percent_na <- function(x) round(100 * mean(is.na(x)), 1)
-
   tbl_grp <- dplyr::group_by_at(tbl, group_var)
-  summary <- dplyr::summarize_at(tbl_grp, vars(var), percent_na)
+  summary <- dplyr::summarize_at(tbl_grp, vars(var), flyover:::percent_na)
 
   ggplot(summary, aes_string(x = group_var, y = var, group = 1)) +
     geom_point(stat = "summary", fun = sum) +
@@ -102,10 +100,8 @@ flyover_na_percent <- function(tbl, var, group_var, ...) {
 #' @rdname flyover_histogram
 #' @export
 flyover_na_count <- function(tbl, var, group_var, ...) {
-  count_na <- function(x) sum(is.na(x))
-
   tbl_grp <- dplyr::group_by_at(tbl, group_var)
-  summary <- dplyr::summarize_at(tbl_grp, vars(var), count_na)
+  summary <- dplyr::summarize_at(tbl_grp, vars(var), flyover:::count_na)
 
   ggplot(summary, aes_string(x = group_var, y = var, group = 1)) +
     geom_point(stat = "summary", fun = sum) +
