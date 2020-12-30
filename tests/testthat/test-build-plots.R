@@ -3,6 +3,7 @@ context("build_plots")
 base_data <- data.frame(grp  = rep(c("old", "new"), each = 10),
                         num1 = 1:20,
                         num2 = 21:40,
+                        num3 = 41:60,
                         cat1 = letters[1:20],
                         cat2 = as.character(101:120),
                         cat3 = rep(TRUE, 20))
@@ -12,26 +13,21 @@ col_names <- c("variable", "plot", "cogs")
 test_data <- list(base_data, data.table::as.data.table(base_data))
 
 for(stack in test_data) {
-  test_that("tibble output with numeric flyover function", {
-    output <- build_plots(stack, flyover_histogram, group_var = "grp")
-    expect_is(output, "tbl_df")
-    expect_equal(nrow(output), 2)
-    expect_equal(names(output), col_names)
-    expect_is(output$plot, "list")
-    expect_is(output$plot[[1]], "gg")
-  })
+  for(fun in names(flyover:::get_flyover_type_lookup())) {
+    test_that("tibble output works with flyover functions", {
+      output <- build_plots(stack, get(fun), group_var = "grp",
+                            keep_type = flyover:::get_flyover_type_lookup()[[fun]])
+      expect_is(output, "tbl_df")
+      expect_equal(nrow(output) %% 3, 0)
+      expect_equal(names(output), col_names)
+      expect_is(output$plot, "list")
+      expect_is(output$plot[[1]], "gg")
+      expect_is(output$plot[[1]]$data$grp, "factor")
+      expect_identical(levels(output$plot[[1]]$data$grp), c("old", "new"))
+    })
+  }
   
-  
-  test_that("tibble output with categorical flyover function", {
-    output <- build_plots(stack, flyover_bar_dodge, group_var = "grp")
-    expect_is(output, "tbl_df")
-    expect_equal(nrow(output), 3)
-    expect_equal(names(output), col_names)
-    expect_is(output$plot, "list")
-    expect_is(output$plot[[1]], "gg")
-  })
-  
-  
+
   test_that("tibble output with custom ggplot function", {
     custom_plot <- function(tbl, var, grp) {
       ggplot(tbl, aes_string(x = var, y = 1:nrow(tbl), color = grp)) +
@@ -40,7 +36,7 @@ for(stack in test_data) {
     
     output <- build_plots(stack, custom_plot, "grp", keep_type = "numeric")
     expect_is(output, "tbl_df")
-    expect_equal(nrow(output), 2)
+    expect_equal(nrow(output), 3)
     expect_equal(names(output), col_names)
     expect_is(output$plot, "list")
     expect_is(output$plot[[1]], "gg")
@@ -51,7 +47,6 @@ for(stack in test_data) {
     expect_equal(names(output), col_names)
     expect_is(output$plot, "list")
     expect_is(output$plot[[1]], "gg")
-    
   })
   
   
