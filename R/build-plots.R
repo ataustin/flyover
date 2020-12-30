@@ -68,6 +68,7 @@ build_plots <- function(stack, plot_fun, group_var = "flyover_id_",
   }
   
   stack <- tibble::as_tibble(stack)
+  stack[[group_var]] <- factor(stack[[group_var]], levels = unique(stack[[group_var]]))
   
   if(is.null(keep_type)) keep_type <- plot_type_lookup[plot_fun_call_char]
   stack_reduced <- keep_cols_by_type(stack[, setdiff(names(stack), group_var)], keep_type)
