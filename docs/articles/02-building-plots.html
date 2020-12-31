@@ -284,7 +284,7 @@
 <p>Notice that these functions – indeed, all the functions in this package – are data-first, meaning they are pipe-friendly. Thus you could in theory write a pipeline like this:</p>
 <pre><code>my_histograms &lt;-
   old %&gt;%
-  enlist_data(new) %&gt;%
+  enlist_data(new, names = c("old data", "new data")) %&gt;%
   stack_data() %&gt;%
   build_plots(flyover_histogram)</code></pre>
 </div>
