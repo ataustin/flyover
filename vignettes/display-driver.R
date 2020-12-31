@@ -34,8 +34,8 @@ new$norm[sample(1:100, 10)] <- NA
 
 old$chisq[sample(1:100, 5)] <- NA
 
-old$fruit[sample(1:100, 30)] <- NA
-new$fruit[sample(1:100, 20)] <- NA
+old$hilo[sample(1:100, 30)] <- NA
+new$hilo[sample(1:100, 20)] <- NA
 
 data_list  <- enlist_data(old, new)
 data_stack <- stack_data(data_list, group_var = "source")
