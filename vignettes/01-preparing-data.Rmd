@@ -78,6 +78,6 @@ Notice that these functions -- indeed, all the functions in this package -- are 
 ```
 data_stack <-
   old %>%
-  enlist_data(new) %>%
+  enlist_data(new, names = c("old data", "new data")) %>%
   stack_data()
 ```

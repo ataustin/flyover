@@ -110,7 +110,7 @@ Notice that these functions -- indeed, all the functions in this package -- are 
 
 ```
 old %>%
-  enlist_data(new) %>%
+  enlist_data(new, names = c("old data", "new data")) %>%
   stack_data() %>%
   build_plots(flyover_histogram) %>%
   build_display("histograms", "display-histograms")
