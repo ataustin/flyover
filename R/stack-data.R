@@ -8,14 +8,15 @@
 #' 
 #' @param data_list A *named* list of tabular data elements that
 #'                  inherit from \code{data.frame}.
-#'                  This is generally the ouptut of \code{\link{enlist_data}}.
+#'                  This is generally the output of \code{\link{enlist_data}}.
 #' @param drop_mismatches Logical.  Whether to drop columns across data
 #'                        sets if they fail to appear in any one data
 #'                        set in the list.
 #' @param group_var Character string.  After stacking, the resulting
-#'                  data will have a new column with this name.  It will
-#'                  contain the list names as its values and will be used
-#'                  to group the data in plots.
+#'                  data will have a new column with this name.  The values
+#'                  of this column are the names of \code{data_list}.
+#'                  These are used to identify the source of data and to
+#'                  group variables for plotting in downstream functions.
 #' @return A single \code{tibble} with a new column having the name
 #'         passed to \code{group_var}.
 #' @examples
