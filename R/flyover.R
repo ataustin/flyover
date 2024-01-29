@@ -2,6 +2,7 @@
 #' 
 #' @docType package
 #' @name flyover
+#' @keywords internal
 #' 
 #' @import ggplot2
 "_PACKAGE"

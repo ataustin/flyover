@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,23 +33,17 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">flyover</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.1</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -76,8 +72,8 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/ataustin/flyover/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="https://github.com/ataustin/flyover/" class="external-link">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -96,103 +92,137 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Using custom plots</h1>
             
-            <h4 class="date">2020-12-31</h4>
+            <h4 data-toc-skip class="date">2024-01-29</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/ataustin/flyover/blob/master/vignettes/04-custom-plots.Rmd"><code>vignettes/04-custom-plots.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/ataustin/flyover/blob/HEAD/vignettes/04-custom-plots.Rmd" class="external-link"><code>vignettes/04-custom-plots.Rmd</code></a></small>
       <div class="hidden name"><code>04-custom-plots.Rmd</code></div>
 
     </div>
 
     
     
-<div id="what-this-article-covers" class="section level2">
-<h2 class="hasAnchor">
-<a href="#what-this-article-covers" class="anchor"></a>What this article covers</h2>
+<div class="section level2">
+<h2 id="what-this-article-covers">What this article covers<a class="anchor" aria-label="anchor" href="#what-this-article-covers"></a>
+</h2>
 <p>A typical <code>flyover</code> workflow has the following steps:</p>
 <ol style="list-style-type: decimal">
 <li>Combine different data sets into a single table.</li>
 <li>Apply a plotting function to the columns of the table.</li>
 <li>Build a display to navigate the plots.</li>
 </ol>
-<p>This vignette will introduce <strong>alternative plotting functions</strong> for step 2. While there are some built-in <code>flyover</code> plotting functions ready to use, there will be times that you need something customized. You can write your own plotting function to pass into the <code>build_plots</code> function.</p>
+<p>This vignette will introduce <strong>alternative plotting
+functions</strong> for step 2. While there are some built-in
+<code>flyover</code> plotting functions ready to use, there will be
+times that you need something customized. You can write your own
+plotting function to pass into the <code>build_plots</code>
+function.</p>
 </div>
-<div id="data-for-this-example" class="section level2">
-<h2 class="hasAnchor">
-<a href="#data-for-this-example" class="anchor"></a>Data for this example</h2>
-<p>The data used in this example is the same as in the previous vignettes.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">my_data</span><span class="op">)</span></pre></div>
-<pre><code>## tibble [200 × 10] (S3: tbl_df/tbl/data.frame)
-##  $ source: chr [1:200] "old" "old" "old" "old" ...
-##  $ norm  : num [1:200] 1.586 1.709 0.891 0.547 1.606 ...
-##  $ exp   : num [1:200] 0.1772 0.0858 0.3273 0.5311 2.5615 ...
-##  $ chisq : num [1:200] 4.53 6.54 4.92 3.55 2.71 ...
-##  $ lnorm : num [1:200] 1.024 0.619 1.016 4.919 1.054 ...
-##  $ gamma : num [1:200] 0.866 0.89 0.549 1.02 0.948 ...
-##  $ alpha : chr [1:200] "c" "b" "a" "d" ...
-##  $ hilo  : chr [1:200] "high" "low" "low" "low" ...
-##  $ tf    : logi [1:200] TRUE FALSE TRUE TRUE FALSE TRUE ...
-##  $ fruit : chr [1:200] "pear" "pear" "apple" "pear" ...</code></pre>
+<div class="section level2">
+<h2 id="data-for-this-example">Data for this example<a class="anchor" aria-label="anchor" href="#data-for-this-example"></a>
+</h2>
+<p>The data used in this example is the same as in the previous
+vignettes.</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">my_data</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## tibble [200 × 10] (S3: tbl_df/tbl/data.frame)</span></span>
+<span><span class="co">##  $ source: chr [1:200] "old" "old" "old" "old" ...</span></span>
+<span><span class="co">##  $ norm  : num [1:200] 1.586 1.709 0.891 0.547 1.606 ...</span></span>
+<span><span class="co">##  $ exp   : num [1:200] 0.1772 0.0858 0.3273 0.5311 2.5615 ...</span></span>
+<span><span class="co">##  $ chisq : num [1:200] 4.53 6.54 4.92 3.55 2.71 ...</span></span>
+<span><span class="co">##  $ lnorm : num [1:200] 1.024 0.619 1.016 4.919 1.054 ...</span></span>
+<span><span class="co">##  $ gamma : num [1:200] 0.866 0.89 0.549 1.02 0.948 ...</span></span>
+<span><span class="co">##  $ alpha : chr [1:200] "c" "b" "a" "d" ...</span></span>
+<span><span class="co">##  $ hilo  : chr [1:200] "high" "low" "low" "low" ...</span></span>
+<span><span class="co">##  $ tf    : logi [1:200] TRUE FALSE TRUE TRUE FALSE TRUE ...</span></span>
+<span><span class="co">##  $ fruit : chr [1:200] "pear" "pear" "apple" "pear" ...</span></span></code></pre>
 </div>
-<div id="structure-of-flyover-plotting-functions" class="section level2">
-<h2 class="hasAnchor">
-<a href="#structure-of-flyover-plotting-functions" class="anchor"></a>Structure of <code>flyover</code> plotting functions</h2>
-<p>The built-in plotting functions that ship with this package are little more than wrappers for <code>ggplot2</code> plots. For example, this is the body of the function <code>flyover_histogram</code>:</p>
-<pre><code>## function (tbl, var, group_var, ...) 
-## {
-##     ggplot(tbl, aes_string(x = var, fill = group_var)) + geom_histogram(position = "identity", 
-##         alpha = 0.5, ...) + theme_minimal(base_size = 14)
-## }
-## &lt;bytecode: 0x55a9583ec080&gt;
-## &lt;environment: namespace:flyover&gt;</code></pre>
+<div class="section level2">
+<h2 id="structure-of-flyover-plotting-functions">Structure of <code>flyover</code> plotting functions<a class="anchor" aria-label="anchor" href="#structure-of-flyover-plotting-functions"></a>
+</h2>
+<p>The built-in plotting functions that ship with this package are
+little more than wrappers for <code>ggplot2</code> plots. For example,
+this is the body of the function <code>flyover_histogram</code>:</p>
+<pre><code><span><span class="co">## function (tbl, var, group_var, ...) </span></span>
+<span><span class="co">## {</span></span>
+<span><span class="co">##     ggplot(tbl, aes_string(x = var, fill = group_var)) + geom_histogram(position = "identity", </span></span>
+<span><span class="co">##         alpha = 0.5, ...) + theme_minimal(base_size = 14)</span></span>
+<span><span class="co">## }</span></span>
+<span><span class="co">## &lt;bytecode: 0x55c448f35e30&gt;</span></span>
+<span><span class="co">## &lt;environment: namespace:flyover&gt;</span></span></code></pre>
 <p>Important features to note are the following:</p>
 <ul>
-<li>the first argument is the <code>tbl</code> containing all the data to plot;</li>
-<li>the second and third arguments are character strings specifying the variable to plot and the grouping variable, respectively;</li>
-<li>the dots (<code>...</code>) provide further modification to the plot. These modifications can be specified in the call to <code>build_plots</code> and are passed down to these plotting functions;</li>
+<li>the first argument is the <code>tbl</code> containing all the data
+to plot;</li>
+<li>the second and third arguments are character strings specifying the
+variable to plot and the grouping variable, respectively;</li>
+<li>the dots (<code>...</code>) provide further modification to the
+plot. These modifications can be specified in the call to
+<code>build_plots</code> and are passed down to these plotting
+functions;</li>
 <li>the plotting is performed by <code>ggplot2</code>.</li>
 </ul>
-<p>When you write a custom plotting function, this is the general structure you should follow for compatibility with the workings of <code>build_plots</code>. Of course, you are free to use any themes or other customizations you like.</p>
+<p>When you write a custom plotting function, this is the general
+structure you should follow for compatibility with the workings of
+<code>build_plots</code>. Of course, you are free to use any themes or
+other customizations you like.</p>
 </div>
-<div id="defining-a-custom-plot" class="section level2">
-<h2 class="hasAnchor">
-<a href="#defining-a-custom-plot" class="anchor"></a>Defining a custom plot</h2>
-<p>Let’s say we wish to compare distributions not through the use of histograms, but with empirical cumulative distribution functions (ECDFs). After some research on the <code>ggplot2</code> <a href="https://ggplot2.tidyverse.org/index.html">website</a>, we find the right syntax.</p>
-<p>We can define the function for use in <code>flyover</code> as follows:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="va">custom_ecdf</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">tbl</span>, <span class="va">var</span>, <span class="va">group_var</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu">ggplot</span><span class="op">(</span><span class="va">tbl</span>, <span class="fu">aes_string</span><span class="op">(</span>x <span class="op">=</span> <span class="va">var</span>, color <span class="op">=</span> <span class="va">group_var</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-    <span class="fu">stat_ecdf</span><span class="op">(</span>size <span class="op">=</span> <span class="fl">2</span>, <span class="va">...</span><span class="op">)</span> <span class="op">+</span>
-    <span class="fu">theme_minimal</span><span class="op">(</span>base_size <span class="op">=</span> <span class="fl">14</span><span class="op">)</span>
-<span class="op">}</span></pre></div>
+<div class="section level2">
+<h2 id="defining-a-custom-plot">Defining a custom plot<a class="anchor" aria-label="anchor" href="#defining-a-custom-plot"></a>
+</h2>
+<p>Let’s say we wish to compare distributions not through the use of
+histograms, but with empirical cumulative distribution functions
+(ECDFs). After some research on the <code>ggplot2</code> <a href="https://ggplot2.tidyverse.org/index.html" class="external-link">website</a>, we find the
+right syntax.</p>
+<p>We can define the function for use in <code>flyover</code> as
+follows:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">custom_ecdf</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">tbl</span>, <span class="va">var</span>, <span class="va">group_var</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="va">tbl</span>, <span class="fu">aes_string</span><span class="op">(</span>x <span class="op">=</span> <span class="va">var</span>, color <span class="op">=</span> <span class="va">group_var</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu">stat_ecdf</span><span class="op">(</span>size <span class="op">=</span> <span class="fl">2</span>, <span class="va">...</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu">theme_minimal</span><span class="op">(</span>base_size <span class="op">=</span> <span class="fl">14</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
 </div>
-<div id="using-a-custom-plot" class="section level2">
-<h2 class="hasAnchor">
-<a href="#using-a-custom-plot" class="anchor"></a>Using a custom plot</h2>
-<p>We can now pass the custom plot function to <code>build_plots</code> in the same way as a built-in <code>flyover</code> function, <em>with one important addition</em>. The <code>build_plots</code> function doesn’t have any knowledge about what kind of data our custom plot operates on. We need to supply this knowledge via the <code>keep_type</code> argument, which tells <code>build_plots</code> which type of variables to keep before plotting. You must pass either <code>"numeric"</code> or <code>"categorical"</code>. Since <code>custom_ecdf</code> operates on numeric data, that’s what we choose.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="va">my_ecdf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/build_plots.html">build_plots</a></span><span class="op">(</span><span class="va">my_data</span>, <span class="va">custom_ecdf</span>, <span class="st">"source"</span>, keep_type <span class="op">=</span> <span class="st">"numeric"</span><span class="op">)</span>
-<span class="fu"><a href="../reference/build_display.html">build_display</a></span><span class="op">(</span><span class="va">my_ecdf</span>,
-              display_name <span class="op">=</span> <span class="st">"custom ECDF"</span>,
-              output_dir   <span class="op">=</span> <span class="st">"display-ecdf"</span><span class="op">)</span></pre></div>
+<div class="section level2">
+<h2 id="using-a-custom-plot">Using a custom plot<a class="anchor" aria-label="anchor" href="#using-a-custom-plot"></a>
+</h2>
+<p>We can now pass the custom plot function to <code>build_plots</code>
+in the same way as a built-in <code>flyover</code> function, <em>with
+one important addition</em>. The <code>build_plots</code> function
+doesn’t have any knowledge about what kind of data our custom plot
+operates on. We need to supply this knowledge via the
+<code>keep_type</code> argument, which tells <code>build_plots</code>
+which type of variables to keep before plotting. You must pass either
+<code>"numeric"</code> or <code>"categorical"</code>. Since
+<code>custom_ecdf</code> operates on numeric data, that’s what we
+choose.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">my_ecdf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/build_plots.html">build_plots</a></span><span class="op">(</span><span class="va">my_data</span>, <span class="va">custom_ecdf</span>, <span class="st">"source"</span>, keep_type <span class="op">=</span> <span class="st">"numeric"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/build_display.html">build_display</a></span><span class="op">(</span><span class="va">my_ecdf</span>,</span>
+<span>              display_name <span class="op">=</span> <span class="st">"custom ECDF"</span>,</span>
+<span>              output_dir   <span class="op">=</span> <span class="st">"display-ecdf"</span><span class="op">)</span></span></code></pre></div>
 <iframe src="display-ecdf/" height="500" width="850" scrolling="no" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen="true">
 </iframe>
 </div>
-<div id="advanced-customizations" class="section level2">
-<h2 class="hasAnchor">
-<a href="#advanced-customizations" class="anchor"></a>Advanced customizations</h2>
-<p>When you write a custom plotting function, you are free to transform the data however you like prior to plotting. This is the strategy employed by, <em>e.g.</em>, <code>flyover_na_percent</code> in order to calculate the percent of missing values. Note that you will still be required to operate on a single column at a time to remain compatible with the framework of the package.</p>
-<pre><code>## function (tbl, var, group_var, ...) 
-## {
-##     tbl_grp &lt;- dplyr::group_by_at(tbl, group_var)
-##     summary &lt;- dplyr::summarize_at(tbl_grp, vars(var), flyover:::percent_na)
-##     ggplot(summary, aes_string(x = group_var, y = var, group = 1)) + 
-##         geom_point(stat = "summary", fun = sum) + geom_line(stat = "summary", 
-##         fun = sum, ...) + theme_minimal(base_size = 14) + scale_y_continuous(limits = c(0, 
-##         100)) + labs(x = group_var, y = "Percent NA")
-## }
-## &lt;bytecode: 0x55a9586b69d0&gt;
-## &lt;environment: namespace:flyover&gt;</code></pre>
+<div class="section level2">
+<h2 id="advanced-customizations">Advanced customizations<a class="anchor" aria-label="anchor" href="#advanced-customizations"></a>
+</h2>
+<p>When you write a custom plotting function, you are free to transform
+the data however you like prior to plotting. This is the strategy
+employed by, <em>e.g.</em>, <code>flyover_na_percent</code> in order to
+calculate the percent of missing values. Note that you will still be
+required to operate on a single column at a time to remain compatible
+with the framework of the package.</p>
+<pre><code><span><span class="co">## function (tbl, var, group_var, ...) </span></span>
+<span><span class="co">## {</span></span>
+<span><span class="co">##     tbl_grp &lt;- dplyr::group_by_at(tbl, group_var)</span></span>
+<span><span class="co">##     summary &lt;- dplyr::summarize_at(tbl_grp, vars(var), flyover:::percent_na)</span></span>
+<span><span class="co">##     ggplot(summary, aes_string(x = group_var, y = var, group = 1)) + </span></span>
+<span><span class="co">##         geom_point(stat = "summary", fun = sum) + geom_line(stat = "summary", </span></span>
+<span><span class="co">##         fun = sum, ...) + theme_minimal(base_size = 14) + scale_y_continuous(limits = c(0, </span></span>
+<span><span class="co">##         100)) + labs(x = group_var, y = "Percent NA")</span></span>
+<span><span class="co">## }</span></span>
+<span><span class="co">## &lt;bytecode: 0x55c4492b9ef0&gt;</span></span>
+<span><span class="co">## &lt;environment: namespace:flyover&gt;</span></span></code></pre>
 </div>
   </div>
 
@@ -207,11 +237,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Adam Austin.</p>
+  <p></p>
+<p>Developed by Adam Austin.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
@@ -219,6 +251,8 @@
 
   
 
+
+  
 
   </body>
 </html>

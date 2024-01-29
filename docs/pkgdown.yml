@@ -1,5 +1,5 @@
-pandoc: 2.3.1
-pkgdown: 1.6.1
+pandoc: 2.19.2
+pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
   01-preparing-data: 01-preparing-data.html
@@ -8,5 +8,5 @@ articles:
   04-custom-plots: 04-custom-plots.html
   05-monitoring-data: 05-monitoring-data.html
   06-gallery: 06-gallery.html
-last_built: 2020-12-31T17:10Z
+last_built: 2024-01-29T07:37Z
 
