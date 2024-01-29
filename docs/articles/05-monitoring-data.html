@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,23 +33,17 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">flyover</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.1</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -76,8 +72,8 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/ataustin/flyover/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="https://github.com/ataustin/flyover/" class="external-link">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -96,95 +92,121 @@
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Monitoring data drift</h1>
             
-            <h4 class="date">2020-12-31</h4>
+            <h4 data-toc-skip class="date">2024-01-29</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/ataustin/flyover/blob/master/vignettes/05-monitoring-data.Rmd"><code>vignettes/05-monitoring-data.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/ataustin/flyover/blob/HEAD/vignettes/05-monitoring-data.Rmd" class="external-link"><code>vignettes/05-monitoring-data.Rmd</code></a></small>
       <div class="hidden name"><code>05-monitoring-data.Rmd</code></div>
 
     </div>
 
     
     
-<div id="what-this-article-covers" class="section level2">
-<h2 class="hasAnchor">
-<a href="#what-this-article-covers" class="anchor"></a>What this article covers</h2>
-<p>This article illustrates how the <code>flyover</code> package can be useful to monitor data drift over time. In situations where you pull data on regular intervals, you may be interested in how that data is changing from one pull to another. A large enough shift in distributions may mean you need to retrain models or take other actions. Missing values may also wreak havoc if upstream data processes change without warning.</p>
+<div class="section level2">
+<h2 id="what-this-article-covers">What this article covers<a class="anchor" aria-label="anchor" href="#what-this-article-covers"></a>
+</h2>
+<p>This article illustrates how the <code>flyover</code> package can be
+useful to monitor data drift over time. In situations where you pull
+data on regular intervals, you may be interested in how that data is
+changing from one pull to another. A large enough shift in distributions
+may mean you need to retrain models or take other actions. Missing
+values may also wreak havoc if upstream data processes change without
+warning.</p>
 </div>
-<div id="data-for-this-example" class="section level2">
-<h2 class="hasAnchor">
-<a href="#data-for-this-example" class="anchor"></a>Data for this example</h2>
-<p>We will examine a subset of major storm data that is available from the <code>dplyr</code> package. This will be illustrative only.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
-<span class="va">my_data</span> <span class="op">&lt;-</span>
-  <span class="fu">dplyr</span><span class="fu">::</span><span class="va"><a href="https://dplyr.tidyverse.org/reference/storms.html">storms</a></span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">year</span> <span class="op">&gt;</span> <span class="fl">2006</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">ts_diameter</span>, <span class="va">hu_diameter</span>, <span class="va">lat</span>, <span class="va">long</span>, <span class="va">status</span>, <span class="va">category</span>, <span class="va">wind</span>, <span class="va">pressure</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">my_data</span><span class="op">)</span></pre></div>
-<pre><code>## tibble [2,441 × 9] (S3: tbl_df/tbl/data.frame)
-##  $ year       : num [1:2441] 2007 2007 2007 2007 2007 ...
-##  $ ts_diameter: num [1:2441] 0 127 127 138 138 ...
-##  $ hu_diameter: num [1:2441] 0 0 0 0 0 0 0 0 0 0 ...
-##  $ lat        : num [1:2441] 22.3 23.6 24.3 25.1 27 27.5 29.7 35.5 37.1 39.1 ...
-##  $ long       : num [1:2441] -85.8 -85.7 -85.2 -84.6 -83.2 -82.7 -82.1 -66.5 -65.5 -64.2 ...
-##  $ status     : chr [1:2441] "tropical depression" "tropical storm" "tropical storm" "tropical storm" ...
-##  $ category   : Ord.factor w/ 7 levels "-1"&lt;"0"&lt;"1"&lt;"2"&lt;..: 1 2 2 2 2 1 1 1 2 2 ...
-##  $ wind       : int [1:2441] 30 40 50 45 40 30 30 30 35 45 ...
-##  $ pressure   : int [1:2441] 1004 1000 997 998 1000 1000 1001 1007 1004 999 ...</code></pre>
-<p>When you create data to monitor drift, I recommend using a group column that is formatted akin to ISO-8601 standards, e.g. <code>YYYY-MM-DD</code>, and stacking the data sets in order of date. This will ensure your output is easy to read.</p>
+<div class="section level2">
+<h2 id="data-for-this-example">Data for this example<a class="anchor" aria-label="anchor" href="#data-for-this-example"></a>
+</h2>
+<p>We will examine a subset of major storm data that is available from
+the <code>dplyr</code> package. This will be illustrative only.</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">## Attaching package: 'dplyr'</span></span></code></pre>
+<pre><code><span><span class="co">## The following objects are masked from 'package:stats':</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##     filter, lag</span></span></code></pre>
+<pre><code><span><span class="co">## The following objects are masked from 'package:base':</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##     intersect, setdiff, setequal, union</span></span></code></pre>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">my_data</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="va"><a href="https://dplyr.tidyverse.org/reference/storms.html" class="external-link">storms</a></span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span>ts_diameter <span class="op">=</span> <span class="va">tropicalstorm_force_diameter</span>,</span>
+<span>         hu_diameter <span class="op">=</span> <span class="va">hurricane_force_diameter</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">year</span> <span class="op">&gt;</span> <span class="fl">2006</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">ts_diameter</span>, <span class="va">hu_diameter</span>, <span class="va">lat</span>, <span class="va">long</span>, <span class="va">status</span>, <span class="va">category</span>, <span class="va">wind</span>, <span class="va">pressure</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">my_data</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## tibble [4,309 × 9] (S3: tbl_df/tbl/data.frame)</span></span>
+<span><span class="co">##  $ year       : num [1:4309] 2007 2007 2007 2007 2007 ...</span></span>
+<span><span class="co">##  $ ts_diameter: int [1:4309] 0 110 110 120 120 0 0 0 60 240 ...</span></span>
+<span><span class="co">##  $ hu_diameter: int [1:4309] 0 0 0 0 0 0 0 0 0 0 ...</span></span>
+<span><span class="co">##  $ lat        : num [1:4309] 22.3 23.6 24.3 25.1 27 27.5 29.7 35.5 37.1 39.1 ...</span></span>
+<span><span class="co">##  $ long       : num [1:4309] -85.8 -85.7 -85.2 -84.6 -83.2 -82.7 -82.1 -66.5 -65.5 -64.2 ...</span></span>
+<span><span class="co">##  $ status     : chr [1:4309] "tropical depression" "tropical storm" "tropical storm" "tropical storm" ...</span></span>
+<span><span class="co">##  $ category   : Ord.factor w/ 7 levels "-1"&lt;"0"&lt;"1"&lt;"2"&lt;..: 1 2 2 2 2 1 1 1 2 2 ...</span></span>
+<span><span class="co">##  $ wind       : int [1:4309] 30 40 50 45 40 30 30 30 35 45 ...</span></span>
+<span><span class="co">##  $ pressure   : int [1:4309] 1004 1000 997 998 1000 1000 1001 1007 1004 999 ...</span></span></code></pre>
+<p>When you create data to monitor drift, I recommend using a group
+column that is formatted akin to ISO-8601 standards,
+e.g. <code>YYYY-MM-DD</code>, and stacking the data sets in order of
+date. This will ensure your output is easy to read.</p>
 </div>
-<div id="distribution-drift" class="section level2">
-<h2 class="hasAnchor">
-<a href="#distribution-drift" class="anchor"></a>Distribution drift</h2>
-<div id="numeric-distributions" class="section level3">
-<h3 class="hasAnchor">
-<a href="#numeric-distributions" class="anchor"></a>Numeric distributions</h3>
-<p>I recommend using <code>flyover_binline_ridges</code> or <code>flyover_density_ridges</code> to monitor drift of numeric variables over time.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="va">ridges</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/build_plots.html">build_plots</a></span><span class="op">(</span><span class="va">my_data</span>, <span class="va">flyover_density_ridges</span>, group_var <span class="op">=</span> <span class="st">"year"</span><span class="op">)</span>
-<span class="fu"><a href="../reference/build_display.html">build_display</a></span><span class="op">(</span><span class="va">ridges</span>,
-              display_name <span class="op">=</span> <span class="st">"ridges"</span>,
-              output_dir   <span class="op">=</span> <span class="st">"display-storm-ridges"</span><span class="op">)</span></pre></div>
+<div class="section level2">
+<h2 id="distribution-drift">Distribution drift<a class="anchor" aria-label="anchor" href="#distribution-drift"></a>
+</h2>
+<div class="section level3">
+<h3 id="numeric-distributions">Numeric distributions<a class="anchor" aria-label="anchor" href="#numeric-distributions"></a>
+</h3>
+<p>I recommend using <code>flyover_binline_ridges</code> or
+<code>flyover_density_ridges</code> to monitor drift of numeric
+variables over time.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">ridges</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/build_plots.html">build_plots</a></span><span class="op">(</span><span class="va">my_data</span>, <span class="va">flyover_density_ridges</span>, group_var <span class="op">=</span> <span class="st">"year"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/build_display.html">build_display</a></span><span class="op">(</span><span class="va">ridges</span>,</span>
+<span>              display_name <span class="op">=</span> <span class="st">"ridges"</span>,</span>
+<span>              output_dir   <span class="op">=</span> <span class="st">"display-storm-ridges"</span><span class="op">)</span></span></code></pre></div>
 <iframe src="display-storm-ridges/" height="500" width="850" scrolling="no" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen="true">
 </iframe>
 </div>
-<div id="categorical-distributions" class="section level3">
-<h3 class="hasAnchor">
-<a href="#categorical-distributions" class="anchor"></a>Categorical distributions</h3>
-<p>I recommend using <code>flyover_bar_fill</code> to monitor drift of categorical vairables over time. This will work best if the number of categories is small.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="va">bar_fill</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/build_plots.html">build_plots</a></span><span class="op">(</span><span class="va">my_data</span>, <span class="va">flyover_bar_fill</span>, group_var <span class="op">=</span> <span class="st">"year"</span><span class="op">)</span>
-<span class="fu"><a href="../reference/build_display.html">build_display</a></span><span class="op">(</span><span class="va">bar_fill</span>,
-              display_name <span class="op">=</span> <span class="st">"bar fill"</span>,
-              output_dir   <span class="op">=</span> <span class="st">"display-storm-bar-fill"</span><span class="op">)</span></pre></div>
+<div class="section level3">
+<h3 id="categorical-distributions">Categorical distributions<a class="anchor" aria-label="anchor" href="#categorical-distributions"></a>
+</h3>
+<p>I recommend using <code>flyover_bar_fill</code> to monitor drift of
+categorical vairables over time. This will work best if the number of
+categories is small.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">bar_fill</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/build_plots.html">build_plots</a></span><span class="op">(</span><span class="va">my_data</span>, <span class="va">flyover_bar_fill</span>, group_var <span class="op">=</span> <span class="st">"year"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/build_display.html">build_display</a></span><span class="op">(</span><span class="va">bar_fill</span>,</span>
+<span>              display_name <span class="op">=</span> <span class="st">"bar fill"</span>,</span>
+<span>              output_dir   <span class="op">=</span> <span class="st">"display-storm-bar-fill"</span><span class="op">)</span></span></code></pre></div>
 <iframe src="display-storm-bar-fill/" height="500" width="850" scrolling="no" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen="true">
 </iframe>
 </div>
 </div>
-<div id="data-quality" class="section level2">
-<h2 class="hasAnchor">
-<a href="#data-quality" class="anchor"></a>Data quality</h2>
-<p>You can also monitor missing values, either as raw counts or as a percent of total observations for the group.</p>
-<div id="missing-value-counts" class="section level3">
-<h3 class="hasAnchor">
-<a href="#missing-value-counts" class="anchor"></a>Missing value counts</h3>
-<div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="va">na_count</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/build_plots.html">build_plots</a></span><span class="op">(</span><span class="va">my_data</span>, <span class="va">flyover_na_count</span>, group_var <span class="op">=</span> <span class="st">"year"</span><span class="op">)</span>
-<span class="fu"><a href="../reference/build_display.html">build_display</a></span><span class="op">(</span><span class="va">na_count</span>,
-              display_name <span class="op">=</span> <span class="st">"NA count"</span>,
-              output_dir   <span class="op">=</span> <span class="st">"display-storm-na-count"</span><span class="op">)</span></pre></div>
+<div class="section level2">
+<h2 id="data-quality">Data quality<a class="anchor" aria-label="anchor" href="#data-quality"></a>
+</h2>
+<p>You can also monitor missing values, either as raw counts or as a
+percent of total observations for the group.</p>
+<div class="section level3">
+<h3 id="missing-value-counts">Missing value counts<a class="anchor" aria-label="anchor" href="#missing-value-counts"></a>
+</h3>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">na_count</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/build_plots.html">build_plots</a></span><span class="op">(</span><span class="va">my_data</span>, <span class="va">flyover_na_count</span>, group_var <span class="op">=</span> <span class="st">"year"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/build_display.html">build_display</a></span><span class="op">(</span><span class="va">na_count</span>,</span>
+<span>              display_name <span class="op">=</span> <span class="st">"NA count"</span>,</span>
+<span>              output_dir   <span class="op">=</span> <span class="st">"display-storm-na-count"</span><span class="op">)</span></span></code></pre></div>
 <iframe src="display-storm-na-count/" height="500" width="850" scrolling="no" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen="true">
 </iframe>
 </div>
-<div id="missing-value-percentages" class="section level3">
-<h3 class="hasAnchor">
-<a href="#missing-value-percentages" class="anchor"></a>Missing value percentages</h3>
-<div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="va">na_percent</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/build_plots.html">build_plots</a></span><span class="op">(</span><span class="va">my_data</span>, <span class="va">flyover_na_percent</span>, group_var <span class="op">=</span> <span class="st">"year"</span><span class="op">)</span>
-<span class="fu"><a href="../reference/build_display.html">build_display</a></span><span class="op">(</span><span class="va">na_percent</span>,
-              display_name <span class="op">=</span> <span class="st">"NA percent"</span>,
-              output_dir   <span class="op">=</span> <span class="st">"display-storm-na-percent"</span><span class="op">)</span></pre></div>
+<div class="section level3">
+<h3 id="missing-value-percentages">Missing value percentages<a class="anchor" aria-label="anchor" href="#missing-value-percentages"></a>
+</h3>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">na_percent</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/build_plots.html">build_plots</a></span><span class="op">(</span><span class="va">my_data</span>, <span class="va">flyover_na_percent</span>, group_var <span class="op">=</span> <span class="st">"year"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/build_display.html">build_display</a></span><span class="op">(</span><span class="va">na_percent</span>,</span>
+<span>              display_name <span class="op">=</span> <span class="st">"NA percent"</span>,</span>
+<span>              output_dir   <span class="op">=</span> <span class="st">"display-storm-na-percent"</span><span class="op">)</span></span></code></pre></div>
 <iframe src="display-storm-na-percent/" height="500" width="850" scrolling="no" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen="true">
 </iframe>
 </div>
@@ -202,11 +224,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Adam Austin.</p>
+  <p></p>
+<p>Developed by Adam Austin.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
@@ -214,6 +238,8 @@
 
   
 
+
+  
 
   </body>
 </html>

@@ -10,7 +10,6 @@ vignette: >
 
 ```{r setup, include = FALSE}
 library(flyover)
-library(dplyr)
 ```
 
 
@@ -27,6 +26,8 @@ We will examine a subset of major storm data that is available from the `dplyr` 
 library(dplyr)
 my_data <-
   dplyr::storms %>%
+  rename(ts_diameter = tropicalstorm_force_diameter,
+         hu_diameter = hurricane_force_diameter) %>%
   filter(year > 2006) %>%
   select(year, ts_diameter, hu_diameter, lat, long, status, category, wind, pressure)
 
