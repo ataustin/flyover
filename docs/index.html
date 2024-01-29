@@ -22,6 +22,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -34,23 +36,17 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">flyover</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.1</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -79,8 +75,8 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/ataustin/flyover/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="https://github.com/ataustin/flyover/" class="external-link">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -98,13 +94,13 @@
   <div class="contents col-md-9">
 
 
-<div id="flyover" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#flyover" class="anchor"></a>flyover</h1></div>
+<div class="section level1">
+<div class="page-header"><h1 id="flyover">flyover<a class="anchor" aria-label="anchor" href="#flyover"></a>
+</h1></div>
 <p>Painlessly generate high-level visual comparisons of distributions between groups or data sets.</p>
-<div id="purpose" class="section level2">
-<h2 class="hasAnchor">
-<a href="#purpose" class="anchor"></a>Purpose</h2>
+<div class="section level2">
+<h2 id="purpose">Purpose<a class="anchor" aria-label="anchor" href="#purpose"></a>
+</h2>
 <p>This package is for you if:</p>
 <ul>
 <li>you are dealing with many variables whose distributions may differ in important ways among groups;</li>
@@ -114,46 +110,46 @@
 </ul>
 <p><code>flyover</code> provides utilities to quickly generate and organize plots of distributions split by a grouping variable.</p>
 </div>
-<div id="documentation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#documentation" class="anchor"></a>Documentation</h2>
-<p>For detailed instructions, see the <a href="https://ataustin.github.io/flyover/">package website</a>.</p>
-<p>This package is largely powered by <a href="https://ggplot2.tidyverse.org/">ggplot2</a> for building plots, and the awesome <a href="https://hafen.github.io/trelliscopejs/">trelliscopejs</a> by <a href="https://ryanhafen.com/">Ryan Hafen</a> for providing a viewer to navigate them.</p>
+<div class="section level2">
+<h2 id="documentation">Documentation<a class="anchor" aria-label="anchor" href="#documentation"></a>
+</h2>
+<p>For detailed instructions, see the <a href="https://ataustin.github.io/flyover/" class="external-link">package website</a>.</p>
+<p>This package is largely powered by <a href="https://ggplot2.tidyverse.org/" class="external-link">ggplot2</a> for building plots, and the awesome <a href="https://hafen.github.io/trelliscopejs/" class="external-link">trelliscopejs</a> by <a href="https://ryanhafen.com/" class="external-link">Ryan Hafen</a> for providing a viewer to navigate them.</p>
 </div>
-<div id="install" class="section level2">
-<h2 class="hasAnchor">
-<a href="#install" class="anchor"></a>Install</h2>
-<pre><code><a href="https://devtools.r-lib.org//reference/remote-reexports.html">devtools::install_github("ataustin/flyover")
-library(flyover)</a></code></pre>
+<div class="section level2">
+<h2 id="install">Install<a class="anchor" aria-label="anchor" href="#install"></a>
+</h2>
+<pre><code><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"ataustin/flyover"</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ataustin/flyover" class="external-link">flyover</a></span><span class="op">)</span></span></code></pre>
 <p>Note that the dependencies are large (especially trelliscopejs) and may take a long time to install.</p>
 </div>
-<div id="quickstart" class="section level2">
-<h2 class="hasAnchor">
-<a href="#quickstart" class="anchor"></a>Quickstart</h2>
+<div class="section level2">
+<h2 id="quickstart">Quickstart<a class="anchor" aria-label="anchor" href="#quickstart"></a>
+</h2>
 <p>A typical <code>flyover</code> workflow has the following steps:</p>
-<ol>
+<ol style="list-style-type: decimal">
 <li>Combine different data sets into a single table.</li>
 <li>Apply a plotting function to the columns of the table.</li>
 <li>Build a display to navigate the plots.</li>
 </ol>
 <p>If you are comparing distribtions of variables between an old data process and a new one, your workflow might look like this:</p>
-<pre><code>old_data &lt;- read.csv("old-data.csv")
-new_data &lt;- read.csv("new-data.csv")
-
-enlist_data(old_data, new_data, names = c("old data", "new data")) %&gt;%
-  build_plots(flyover_histogram) %&gt;%
-  build_display(display_name = "histograms", output_dir = "display-hist")</code></pre>
-<p>Get started with the articles in the <a href="https://ataustin.github.io/flyover/">documentation</a> or jump right into the gallery of <a href="https://ataustin.github.io/flyover/articles/06-gallery.html">displays</a>.</p>
+<pre><code><span><span class="va">old_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="st">"old-data.csv"</span><span class="op">)</span></span>
+<span><span class="va">new_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="st">"new-data.csv"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="reference/enlist_data.html">enlist_data</a></span><span class="op">(</span><span class="va">old_data</span>, <span class="va">new_data</span>, names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"old data"</span>, <span class="st">"new data"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu"><a href="reference/build_plots.html">build_plots</a></span><span class="op">(</span><span class="va">flyover_histogram</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu"><a href="reference/build_display.html">build_display</a></span><span class="op">(</span>display_name <span class="op">=</span> <span class="st">"histograms"</span>, output_dir <span class="op">=</span> <span class="st">"display-hist"</span><span class="op">)</span></span></code></pre>
+<p>Get started with the articles in the <a href="https://ataustin.github.io/flyover/" class="external-link">documentation</a> or jump right into the gallery of <a href="https://ataustin.github.io/flyover/articles/06-gallery.html" class="external-link">displays</a>.</p>
 </div>
-<div id="tips" class="section level2">
-<h2 class="hasAnchor">
-<a href="#tips" class="anchor"></a>Tips</h2>
+<div class="section level2">
+<h2 id="tips">Tips<a class="anchor" aria-label="anchor" href="#tips"></a>
+</h2>
 <p>If you build a display from the console or as a batch job from an R script, you can point your browser directly at the output directory to render the display. You can also render the display inside an R Markdown document by making the call to <code>build_display</code> the last line of a code chunk (ensure the output directory specification is a relative file path, or you will get a knitting error).</p>
 </div>
-<div id="contributing-and-reporting-problems" class="section level2">
-<h2 class="hasAnchor">
-<a href="#contributing-and-reporting-problems" class="anchor"></a>Contributing and reporting problems</h2>
-<p>Please see <a href="https://github.com/ataustin/flyover/blob/master/contribute.md"><code>contribute.md</code></a>.</p>
+<div class="section level2">
+<h2 id="contributing-and-reporting-problems">Contributing and reporting problems<a class="anchor" aria-label="anchor" href="#contributing-and-reporting-problems"></a>
+</h2>
+<p>Please see <a href="https://github.com/ataustin/flyover/blob/master/contribute.md" class="external-link"><code>contribute.md</code></a>.</p>
 </div>
 </div>
 
@@ -161,45 +157,56 @@ enlist_data(old_data, new_data, names = c("old data", "new data")) %&gt;%
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Browse source code at <br><a href="https://github.com/ataustin/flyover/">https://​github.com/​ataustin/​flyover/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/ataustin/flyover/issues">https://​github.com/​ataustin/​flyover/​issues</a>
-</li>
+<li><a href="https://github.com/ataustin/flyover/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/ataustin/flyover/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
+
 <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li><a href="LICENSE.html">Full license</a></li>
-<li><small><a href="https://opensource.org/licenses/mit-license.php">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
+<li><small><a href="https://opensource.org/licenses/mit-license.php" class="external-link">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
 </ul>
 </div>
+
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html#citation">Citing flyover</a></li>
+</ul>
+</div>
+
 <div class="developers">
-<h2>Developers</h2>
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Adam Austin <br><small class="roles"> Author, maintainer, copyright holder </small>  </li>
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://www.tidyverse.org/lifecycle/#experimental"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></li>
-<li><a href="https://codecov.io/gh/ataustin/flyover?branch=master"><img src="https://codecov.io/gh/ataustin/flyover/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
+<li><a href="https://www.tidyverse.org/lifecycle/#experimental" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></li>
+<li><a href="https://codecov.io/gh/ataustin/flyover?branch=master" class="external-link"><img src="https://codecov.io/gh/ataustin/flyover/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
 </ul>
 </div>
-</div>
+
+  </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Adam Austin.</p>
+  <p></p>
+<p>Developed by Adam Austin.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
@@ -207,6 +214,8 @@ enlist_data(old_data, new_data, names = c("old data", "new data")) %&gt;%
 
   
 
+
+  
 
   </body>
 </html>

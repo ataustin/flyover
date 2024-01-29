@@ -7,11 +7,11 @@
 build_plots(
   stack,
   plot_fun,
+  ...,
   group_var = "flyover_id_",
   keep_type = NULL,
   ncores = 1,
-  plot_mods = NULL,
-  ...
+  plot_mods = NULL
 )
 }
 \arguments{
@@ -26,9 +26,15 @@ but must be careful to match that function with
 the appropriate \code{keep_type} argument.
 Note that this function must be passed without parentheses.}
 
+\item{...}{Additional arguments to pass to the \code{geom} of the
+supplied \code{flyover} plot function.  Use this for further
+modifications to the plots if needed.}
+
 \item{group_var}{Character string; the column name that represents the
 source of the data.  It will be used as a grouping
-variable in the subsequent plots.}
+variable in the subsequent plots. The default value
+comes from the grouping column created by default in
+\code{\link{stack_data}}.}
 
 \item{keep_type}{Depending on the type of plot desired,
 only numeric or categorical data can be used.
@@ -51,10 +57,6 @@ Windows, so this argument is ignored for Windows systems.}
 such as theme changes, different color scales, etc.
 Each layer should be a separate list element.
 See \code{?ggplot2::`+.gg`} for more details.}
-
-\item{...}{Additional arguments to pass to the \code{geom} of the
-supplied \code{flyover} plot function.  Use this for further
-modifications to the plots if needed.}
 }
 \value{
 A \code{tibble} containing, for each relevant variable of the
