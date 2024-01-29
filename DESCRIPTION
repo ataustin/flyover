@@ -14,7 +14,7 @@ License: MIT + file LICENSE
 URL: https://github.com/ataustin/flyover
 BugReports: https://github.com/ataustin/flyover/issues
 Imports: 
-    dplyr,
+    dplyr (>= 1.0.8),
     tibble,
     ggplot2,
     ggridges,
